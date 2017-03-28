@@ -1,0 +1,35 @@
+{
+    "PORT": 8888,
+    "APP": "",
+    "DIST_PATH": "dist",
+    "JS_LIB_PATH": "/dist/lib",
+    "JS_STATIC_PATH": "/dist/js",
+    "IMAGE_STATIC_PATH": "/dist/images",
+    "STYLE_STATIC_PATH": "/dist/style",
+    "RETINA_DEFAULT_RATIO": "@2x",
+    "STUB_SERVER": {
+        "FETCH_HOSTNAME": "localhost",
+        "FETCH_PORT": 8888,
+        "HTTP_HOSTNAME": "localhost",
+        "HTTP_PORT": 8888,
+        "FILE_DIR": "stub"
+    },
+    "API_SERVER": {
+        "FETCH_HOSTNAME": "trsapi.xesfun.com",
+        "FETCH_PORT": 80,
+        "HTTP_HOSTNAME": "trsapi.xesfun.com",
+        "HTTP_PORT": 80
+    },
+    "PAGE_SERVER": {
+        "HOST": "localhost",
+        "PORT": 80
+    },
+    "@ALIYUN": {
+        "ACCESS_KEY_ID": "3ynAN27TmrVqiZ93",
+        "ACCESS_KEY_SECRET": "MZEtpaB4ddwWTjiJe4kJN2O5MwMGw0",
+        "OSS_ENDPOINT": "oss-cn-shanghai.aliyuncs.com",
+        "BUCKET": "njxes",
+        "APP_IMG_DIRECTORY": "wt/app_resource"
+    },
+    "CROSSDOMAIN": "*"
+}

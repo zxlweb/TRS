@@ -1,0 +1,12 @@
+/**
+ * @fileOverview action types
+ * @author Max
+ */
+
+const ACTION_TYPE = {
+    CREDIT_GET_MY_CARDS: 'CREDIT_GET_MY_CARDS',
+    CREDIT_GET_NEW_CARD: 'CREDIT_GET_NEW_CARD',
+    CREDIT_GET_CURRENT_COLLECTED_UP_COUNT: 'CREDIT_GET_CURRENT_COLLECTED_UP_COUNT'
+};
+
+export default ACTION_TYPE;
