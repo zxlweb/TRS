@@ -19,16 +19,14 @@ startServer({
     reducerRoot: APP,
     routes: ROUTES,
     createStore: finalCreateStore,
+    dataFlagResolver: function (obj: any, resolve: Function, reject: Function) {
+        if (obj.result_code === 0) {
+            resolve(obj.content);
+        } else {
+            reject(obj);
+        }
+    },
     serverInterceptor: app => {
-        // for wechat
-        app.all('/MP_verify_Vbv0JhVzuw3VGLWv.txt', function(req, res, next) {
-            res.send('Vbv0JhVzuw3VGLWv');
-            res.end();
-        });
-
-        // for form
-        app.all('/form/1', function(req, res, next) {
-            res.redirect('http://xesnj.flzhan.com/text293.html');
-        });
+        
     }
 });

@@ -1,13 +1,18 @@
 /**
  * @fileOverview app's reducer 
- * @author Max
+ * @author zxl
  **/
 
-import {combineReducers} from 'redux';
-import home from './home';
+import { combineReducers } from 'redux';
+import login from './login';
+import reportdata from './reportdata';
+import uniExamData from './uni-exam';
 
-const app = combineReducers({
-    home
+const APP = combineReducers({
+    login,
+    reportdata,
+    uniExamData
+
 });
 
-export default app;
+export default APP;

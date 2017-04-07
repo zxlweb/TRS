@@ -8,7 +8,8 @@ import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
 class Xtable extends React.Component<{
     p: any,
-    o: any
+    o: any,
+    title: string
 }, {
     }>{
     render() {
@@ -19,21 +20,18 @@ class Xtable extends React.Component<{
                 let value = this.props.o[index].total_value;
                 let myScore: any = (ele.score_rate * value).toFixed(0);
                 let meanScore: any = (this.props.o[index].mean_sr * value).toFixed(2);
-                let obj={
-                     score_rate: myScore,
-                     mean_sr: meanScore,
-                     score_vary: (myScore - meanScore) > 0 ? "高" + (myScore - meanScore).toFixed(2) + "分" : "低" + (meanScore - myScore).toFixed(2) + "分",
-                     score_vary_positive: (myScore - meanScore) > 0
+                let obj = {
+                    score_rate: myScore,
+                    mean_sr: meanScore,
+                    score_vary: (myScore - meanScore) > 0 ? "高" + (myScore - meanScore).toFixed(2) + "分" : "低" + (meanScore - myScore).toFixed(2) + "分",
+                    score_vary_positive: (myScore - meanScore) > 0
                 }
                 if (!!ele.tyid) {
-                    Object.assign(obj,{ tyid: ele.tyid,});
-                    temArr.push(obj);
-                    title = '题型'
+                    Object.assign(obj, { tyid: ele.tyid, });
                 } else {
-                     Object.assign(obj,{ tyid: ele.kpid,});
-                     temArr.push(obj);
-                     title = '知识点'
+                    Object.assign(obj, { tyid: ele.kpid, });
                 }
+                temArr.push(obj);
             }
             )
         }
@@ -42,7 +40,7 @@ class Xtable extends React.Component<{
             <table className="rd-table">
                 <thead className="rd-table-thead">
                     <tr className="rd-table-th">
-                        <td className="rd-table-td">{title}</td>
+                        <td className="rd-table-td">{this.props.title}</td>
                         <td className="rd-table-td">得分</td>
                         <td className="rd-table-td">平均得分</td>
                         <td className="rd-table-td">分差</td>
@@ -50,20 +48,14 @@ class Xtable extends React.Component<{
                 </thead>
                 <tbody>
                     {
-                        (() => {
-                            let trs = [];
-                           for (let i = 0; i < temArr.length; i++) {
-                                trs.push(
-                                    <tr className="rd-table-tr" key={i}>
-                                        <td className="rd-table-td">{temArr[i].tyid}</td>
-                                        <td className="rd-table-td">{temArr[i].score_rate}</td>
-                                        <td className="rd-table-td">{temArr[i].mean_sr}</td>
-                                        <td className={`${(temArr[i].score_vary.indexOf("高")) != -1? "positive":" "}  rd-table-td`}>{temArr[i].score_vary}</td>
-                                    </tr>
-                                )
-                            }
-                          return trs;
-                        })()
+                        temArr.map((item: any, index: number) => (
+                            <tr className="rd-table-tr" key={index}>
+                                <td className="rd-table-td">{item.tyid}</td>
+                                <td className="rd-table-td">{item.score_rate}</td>
+                                <td className="rd-table-td">{item.mean_sr}</td>
+                                <td className={`${item.score_vary_positive ? "positive" : " "}  rd-table-td`}>{item.score_vary}</td>
+                            </tr>
+                        ))
                     }
                 </tbody>
             </table>

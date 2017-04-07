@@ -24,14 +24,12 @@ class RankChart extends React.Component<{
                 let pct = 1 - _msg.high_percent * 1
                 return (pct * 100).toFixed(2) + '%'
             }
-
         };
         let fairrank = function () {
             if (_msg.mean_percent) {
                 let pct = _msg.mean_percent * 1
                 return (pct * 100).toFixed(2) + '%'
             }
-
         };
         return (
             <div className="rank-container">
@@ -53,7 +51,7 @@ class RankChart extends React.Component<{
                     {
                         !_msg.teacher_name ?
                             (`你战胜了${myrank()}的同学!`) :
-                            (`你在 ${_msg.teacher_name}老师名下，排名第
+                            (`你在 ${_msg.teacher_name}老师名下，排名第 ${_msg.user_rank}
                               战胜了${myrank()}的同学！`)
                     }
                 </div>

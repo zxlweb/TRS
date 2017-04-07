@@ -30,3 +30,4 @@ declare abstract class REQUEST {
      */
     setParam(key: string, value: any): void
 }
+

@@ -1,5 +1,6 @@
 /**
  * @fileOVerview trs login page
+ * @author zxl
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -9,12 +10,13 @@ import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
 import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
+import APP from '../../a-reducer/app';
+import { getLogin } from '../../a-action/login';
 const style = _importLess('./index', __dirname);
 class Login extends BaseComponent<{
 }, {
         id: string,
-        exist: boolean,
-        error: boolean
+        exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
     setUpPage(manager: HTMLManager) { }
@@ -23,36 +25,40 @@ class Login extends BaseComponent<{
         super(props);
         this.state = {
             id: '',
-            exist: false,
-            error: false
+            exist: false
         }
     }
+    componentDidMount() {
+        super.componentDidMount();
+    }
     async handelSubmit(e: any) {
-        //    发送请求
+        const { dispatch } = this.props;
         try {
-            let response = await _http.post(REQUEST.SUBMIT, { id: this.state.id });
+            var response = await _http.post(REQUEST.SUBMIT, { id: this.state.id });
             this.setState({
-                error: false,
                 exist: false
             });
-            browserHistory.push('reportlist/' + this.state.id);
+            dispatch(getLogin(this.state.id));
+
+            location.href = `${ROUTE_PATH.REPORTLIST}/${this.state.id}`;
+
         } catch (error) {
             this.setState({
-                error: true,
                 exist: true
             });
+
         }
+
     }
     handleChange(event: any) {
         this.setState({
             id: event.target.value,
-            error: false,
             exist: false
         });
     }
     render() {
         return (
-            <div id='xsrMain'>
+            <div>
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
                 <div className='login-pagewrap'>
                     <h3>学而思 Test Report System</h3>
@@ -62,7 +68,7 @@ class Login extends BaseComponent<{
                     <div className='login'>
                         <div data-show={this.state.exist} className='err-msg'>账户不存在</div>
                         <form >
-                            <input type="text" placeholder="输入学员编号" className={`${this.state.error ? "err" : ""} login-field`} value={this.state.id} onChange={this.handleChange.bind(this)} />
+                            <input type="text" placeholder="输入学员编号" className={`${this.state.exist ? "err" : ""} login-field`} value={this.state.id} onChange={this.handleChange.bind(this)} />
                             <button className="login-btn" onClick={this.handelSubmit.bind(this)} type="button">查询</button>
                         </form>
                     </div>
@@ -72,5 +78,5 @@ class Login extends BaseComponent<{
         )
     }
 }
-const selector = () => ({});
+const selector = () => ({})
 export = connect(selector)(Login);

@@ -1,15 +1,14 @@
 /**
  * @fileOverview request urls
- * @author Max
+ * @author zxl
  */
 
-const PREFIX = 'front';
-// const PREFIX = '';
-
+const PREFIX = 'trs/front';
 const REQEUST = {
-    SUBMIT:`${PREFIX}/user/searchByStudentID`,
+    SUBMIT: `${PREFIX}/user/searchByStudentID`,
     REPORTLIST: `${PREFIX}/user/searchByStudentID`,
-    REPORTDATA:`${PREFIX}/report/data`
+    REPORTDATA: `${PREFIX}/report/data`,
+    UNIEXAM:`${PREFIX}/report/datac`
 };
 
 export default REQEUST;

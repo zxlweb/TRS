@@ -27,7 +27,7 @@ class Root extends BaseComponent<any, any> {
     componentDidMount() {
         super.componentDidMount();
         console.log('root did mount');
-       const fastclick = require('fastclick');
+        const fastclick = require('fastclick');
         fastclick.attach(document.body);
     }
     render() {

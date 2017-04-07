@@ -1,5 +1,6 @@
 /**
  * @fileOVerview trs reportdata page
+ * @author zxl
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -9,167 +10,43 @@ import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
 import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
-import Xtable from './Xtable';
-import Summarize from './Summarize';
-import RankChart from './RankChart';
+import Xtable from './xtable';
+import Summarize from './summarize';
+import RankChart from './rankchart';
 import Header from '../header';
+import { getData } from '../../a-action/reportdata';
+import * as moment from 'moment';
 const style = _importLess('./index', __dirname);
 class Reportdata extends BaseComponent<{
+    dataAll: any
 }, {
-        dataAll: {
-            ad: {
-                img: string,
-                redirect_url: string
-            },
-            basic_info: {
-                user_total_score: number,
-                exam_date: string,
-                exam_title: string,
-                exam_total_people: number,
-                exam_total_score: number,
-                user_name: string,
-                user_prize: string,
-                user_rank: number,
-            },
-            knowledge_point_info: {
-                conclusion: Array<any>,
-                overall: Array<any>,
-                personal: Array<any>
-            },
-            overall_info: {
-                conclusion: string,
-                high_percent: number,
-                highest_score: number,
-                mean_percent: number,
-                mean_score: number,
-                score_segments: Array<{}>,
-                statement: any,
-                user_percent: number
-            },
-            question_detail_info: Array<any>,
-            question_type_info: {
-                conclusion: Array<any>,
-                overall: Array<any>,
-                personal: Array<any>
-            },
-            teacher_review: {
-                review_knowledge: string,
-                review_overall: string,
-                review_question_type: string,
-                teacher_head_icon: string,
-                teacher_name: string
-            },
-            teacher_oriented_info: {
-                flag: boolean,
-                high_percent: number,
-                mean_percent: number,
-                total_people: number,
-                user_percent: number,
-                user_rank: number,
-                teacher_name: string
-            }
-        }
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
-    setUpPage(manager: HTMLManager) {
-        manager.setTag('title', `${this.state.dataAll.basic_info.user_name + "在" + this.state.dataAll.basic_info.exam_title + "中战胜了" + (this.state.dataAll.teacher_oriented_info.user_percent * 100) + "%的同学"}`);
-
+    setUpPage(manager: HTMLManager, datas: any) {
+        manager.setTag('title', `${datas[0].basic_info.user_name}在${datas[0].basic_info.exam_title}中战胜了${(datas[0].teacher_oriented_info.user_percent).toFixed(2) * 100}%的同学`);
     }
-    getInitDataActionImp(props: any): void | any[] { }
+    getInitDataActionImp(props: any): void | any[] {
+        return [
+            getData(props.params.sid, props.params.eid)
+        ]
+    }
     constructor(props: any) {
         super(props);
-        this.state = {
-
-            dataAll: {
-                ad: {
-                    img: "",
-                    redirect_url: ""
-                },
-                basic_info: {
-                    user_total_score: 0,
-                    exam_date: "",
-                    exam_title: "",
-                    exam_total_people: 0,
-                    exam_total_score: 0,
-                    user_name: "",
-                    user_prize: "",
-                    user_rank: 0,
-
-                },
-                knowledge_point_info: {
-                    conclusion: [],
-                    overall: [],
-                    personal: []
-                },
-                overall_info: {
-                    conclusion: "",
-                    high_percent: 0,
-                    highest_score: 0,
-                    mean_percent: 0,
-                    mean_score: 0,
-                    score_segments: [],
-                    statement: "",
-                    user_percent: 0
-                },
-                question_detail_info: [],
-                question_type_info: {
-                    conclusion: [],
-                    overall: [],
-                    personal: []
-                },
-                teacher_review: {
-                    review_knowledge: "", review_overall: "", review_question_type: "", teacher_head_icon: "", teacher_name: ""
-                },
-                teacher_oriented_info: {
-                    flag: false,
-                    high_percent: 0,
-                    mean_percent: 0,
-                    total_people: 0,
-                    user_percent: 0,
-                    user_rank: 0,
-                    teacher_name: ""
-                }
-            }
-        }
-
-
-
     }
-    async componentDidMount() {
+    componentDidMount() {
         super.componentDidMount();
-        const { dispatch } = this.props;
-        //    发送请求
-        try {
-            let response = await _http.post(REQUEST.REPORTDATA, { sid: this.props.params.sid, eid: this.props.params.eid });
-            console.log(response);
-            let ad = response.ad, basic_info = response.basic_info, knowledge_point_info = response.knowledge_point_info, overall_info = response.overall_info,
-                question_detail_info = response.question_detail_info, question_type_info = response.question_type_info, teacher_review = response.teacher_review,
-                teacher_oriented_info = response.teacher_oriented_info;
+        const { dispatch, dataAll } = this.props;
 
-            this.setState({
-                dataAll: {
-                    ad: ad,
-                    basic_info: basic_info,
-                    knowledge_point_info: knowledge_point_info,
-                    overall_info: overall_info,
-                    question_detail_info: question_detail_info,
-                    question_type_info: question_type_info,
-                    teacher_review: teacher_review,
-                    teacher_oriented_info: teacher_oriented_info
-                }
-            });
 
-        } catch (error) {
-        }
-        let Highcharts = require('highcharts');
-        this.PaintContainer(Highcharts);
-        let Chart = require('chart.js');
-        this.Paintkpcontainer(Highcharts, Chart);
-        this.Paintspcontainer(Highcharts, Chart);
+        const Highcharts = require('highcharts');
+        this.PaintContainer(dataAll, Highcharts);
+        const Chart = require('chart.js');
+        this.PaintPieRadarcontainer(dataAll.knowledge_point_info.overall, dataAll.knowledge_point_info.personal, Highcharts, 'kpcontainer', Chart, this.refs.kRadarChart);
+        this.PaintPieRadarcontainer(dataAll.question_type_info.overall, dataAll.question_type_info.personal, Highcharts, 'spcontainer', Chart, this.refs.SocreRadarChart);
     }
-    PaintContainer(Highcharts: any) {
-        var xData = this.state.dataAll.overall_info;
-        var xArr: any = [], yArr: any = [], zArr: any = [], myscore = this.state.dataAll.basic_info.user_total_score;
+    PaintContainer(dataAll: any, Highcharts: any) {
+        var xData = dataAll.overall_info;
+        var xArr: any = [], yArr: any = [], zArr: any = [], myscore = dataAll.basic_info.user_total_score;
         xData.score_segments.forEach(function (score: any) {
             xArr.push(score.start_point + '-' + score.end_point)
             if ((myscore * 1 <= score.end_point * 1) && (myscore * 1 > score.start_point * 1)) {
@@ -259,49 +136,71 @@ class Reportdata extends BaseComponent<{
 
     }
 
-    Paintkpcontainer(Highcharts: any, Chart: any) {
+    PaintPieRadarcontainer(overall: any, personal: any, Highcharts: any, container: string, Chart: any, ctx: any) {
         let kpData: any = [];
         let temArr: any = [];
         let radarLable: any = [];
         let radarValuemy: any = [];
         let radarValueall: any = [];
-        let ctx = this.refs.kRadarChart;
-        this.state.dataAll.knowledge_point_info.overall.forEach((ele: any, index: any) => {
+        overall.forEach((ele: any, index: any) => {
             temArr = []
-            temArr.push(ele.kpid)
+            temArr.push(ele.kpid || ele.tyid)
             temArr.push(ele.total_value)
             kpData.push(temArr)
-            radarLable.push(ele.kpid)
+            radarLable.push(ele.kpid || ele.kpid || ele.tyid)
             radarValueall.push(ele.mean_sr)
-            radarValuemy.push(this.state.dataAll.knowledge_point_info.personal[index].score_rate)
+            radarValuemy.push(personal[index].score_rate)
         })
-        Highcharts.chart('kpcontainer', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: '知识点分数比重分布'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            series: [{
-                type: 'pie',
-                name: '知识点分数比重分布',
-                data: kpData
-            }]
-        })
+        if (Highcharts && container == 'kpcontainer') {
+            Highcharts.chart(container, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '知识点分数比重分布'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                series: [{
+                    type: 'pie',
+                    name: '知识点分数比重分布',
+                    data: kpData
+                }]
+            })
 
+        } else if (Highcharts && container == 'spcontainer') {
+            Highcharts.chart(container, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '题型分数比重分布'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                series: [{
+                    type: 'pie',
+                    name: '题型分数比重分布',
+                    data: kpData
+                }]
+            })
 
-
+        }
         // 绘制个人能力分布图
 
-        var myRadarChart = new Chart(ctx, {
+        let myRadarChart = new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: radarLable,
@@ -330,85 +229,12 @@ class Reportdata extends BaseComponent<{
             }
         })
     }
-    Paintspcontainer(Highcharts: any, Chart: any) {
-        let kpData: any = [];
-        let temArr = [];
-        let radarLable: any = [];
-        let radarValuemy: any = [];
-        let radarValueall: any = [];
-        let ctx = this.refs.SocreRadarChart;
-        this.state.dataAll.question_type_info.overall.forEach((ele: any, index: any) => {
-            temArr = []
-            temArr.push(ele.tyid)
-            temArr.push(ele.total_value)
-            kpData.push(temArr)
-            radarLable.push(ele.tyid)
-            radarValueall.push(ele.mean_sr)
-            radarValuemy.push(this.state.dataAll.question_type_info.personal[index].score_rate)
-        })
-        Highcharts.chart('spcontainer', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: '题型分数比重分布'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            series: [{
-                type: 'pie',
-                name: '题型分数比重分布',
-                data: kpData
-            }]
-        })
-        var myRadarChart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: radarLable,
-                options: {
-                    scaleOverride: true,
-                    scaleStartValue: 0,
-                    scale: {
-                        reverse: true,
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }
-                },
-                datasets: [
-                    {
-                        label: "平均正确率",
-                        backgroundColor: "rgba(179,181,198,0.2)",
-                        borderColor: "rgba(179,181,198,1)",
-                        pointBackgroundColor: "rgba(179,181,198,1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(179,181,198,1)",
-                        data: radarValueall
-                    },
-                    {
-                        label: "个人正确率",
-                        backgroundColor: "rgba(255,99,132,0.2)",
-                        borderColor: "rgba(255,99,132,1)",
-                        pointBackgroundColor: "rgba(255,99,132,1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(255,99,132,1)",
-                        data: radarValuemy
-                    }
-                ]
-            }
-        })
 
-    }
     render() {
 
+        const { dispatch, dataAll } = this.props;
+        let exam_date = moment(dataAll.basic_info.exam_date);
+        let fullYear = exam_date.format('YYYY-MM-DD');
         return (
             <div id="app-report">
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
@@ -416,26 +242,26 @@ class Reportdata extends BaseComponent<{
                 <div className="report-container">
                     {/*basic_info*/}
                     <div className="basic-info-sec">
-                        <div className="usr-info">你好，{this.state.dataAll.basic_info.user_name}欢迎来到TRS</div>
+                        <div className="usr-info">你好，{dataAll.basic_info.user_name}!欢迎来到TRS!</div>
                         <div className="info-sec">
                             <div className="title">考试名称：</div>
-                            <div className="detail">{this.state.dataAll.basic_info.exam_title}</div>
+                            <div className="detail">{dataAll.basic_info.exam_title}</div>
                         </div>
                         <div className="info-sec">
                             <div className="title">考试时间：</div>
-                            <div className="detail">{this.state.dataAll.basic_info.exam_date}</div>
+                            <div className="detail">{fullYear}</div>
                         </div>
                         <div className="info-sec">
                             <div className="title">个人分数：</div>
-                            <div className="detail">{this.state.dataAll.basic_info.user_total_score}</div>
+                            <div className="detail">{`${dataAll.basic_info.user_total_score}/${dataAll.basic_info.exam_total_score}`}</div>
                         </div>
                         <div className="info-sec">
                             <div className="title">个人排名：</div>
-                            <div className="detail">{this.state.dataAll.basic_info.user_rank}</div>
+                            <div className="detail">{dataAll.basic_info.user_rank}</div>
                         </div>
                         <div className="info-sec">
                             <div className="title">个人奖项：</div>
-                            <div className="detail">{this.state.dataAll.basic_info.user_prize}</div>
+                            <div className="detail">{dataAll.basic_info.user_prize}</div>
                         </div>
                     </div>
                     {/*个人能力分布*/}
@@ -443,7 +269,7 @@ class Reportdata extends BaseComponent<{
                         <div className="r-title">试卷说明</div>
                         <div className="description">
                             <div className="des-detail">
-                                {this.state.dataAll.overall_info.statement}
+                                {dataAll.overall_info.statement}
                             </div>
                         </div>
                         <div className="r-title">年级总体情况</div>
@@ -453,13 +279,13 @@ class Reportdata extends BaseComponent<{
                         </div>
                         <div className="rcontainer">
                             <div className="score-des">
-                                <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{this.state.dataAll.overall_info.mean_score}</div></div>
-                                <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{this.state.dataAll.overall_info.highest_score}</div></div>
-                                <RankChart title="总体排名分布" msg={this.state.dataAll.overall_info}></RankChart>
-                                <RankChart title="同门排名分布" msg={this.state.dataAll.teacher_oriented_info}></RankChart>
+                                <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{dataAll.overall_info.mean_score}</div></div>
+                                <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{dataAll.overall_info.highest_score}</div></div>
+                                <RankChart title="总体排名分布" msg={dataAll.overall_info}></RankChart>
+                                <RankChart title="同门排名分布" msg={dataAll.teacher_oriented_info}></RankChart>
                             </div>
                         </div >
-                        <Summarize item={this.state.dataAll.overall_info.conclusion}></Summarize>
+                        <Summarize item={dataAll.overall_info.conclusion}></Summarize>
                     </div >
                     {/*个人知识点掌握情况*/}
                     < div className="knowledge-report report-sec" >
@@ -473,9 +299,9 @@ class Reportdata extends BaseComponent<{
                         </div>
                         <div className="xcontainer">
                             <div className="table-title">知识点详情:</div>
-                            <Xtable p={this.state.dataAll.knowledge_point_info.personal} o={this.state.dataAll.knowledge_point_info.overall} ></Xtable>
+                            <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
                         </div>
-                        <Summarize item={this.state.dataAll.knowledge_point_info.conclusion}></Summarize>
+                        <Summarize item={dataAll.knowledge_point_info.conclusion}></Summarize>
 
                     </div >
                     {/*个人题型得分情况*/}
@@ -490,9 +316,9 @@ class Reportdata extends BaseComponent<{
                         </div>
                         <div className="xcontainer">
                             <div className="table-title">题型详情:</div>
-                            <Xtable p={this.state.dataAll.question_type_info.personal} o={this.state.dataAll.question_type_info.overall} ></Xtable>
+                            <Xtable p={dataAll.question_type_info.personal} o={dataAll.question_type_info.overall} title='题型'></Xtable>
                         </div>
-                        <Summarize item={this.state.dataAll.question_type_info.conclusion}></Summarize>
+                        <Summarize item={dataAll.question_type_info.conclusion}></Summarize>
 
                     </div >
                     {/*个人小分分析*/}
@@ -511,13 +337,13 @@ class Reportdata extends BaseComponent<{
                                 {
                                     (() => {
                                         let trs = [];
-                                        let question = this.state.dataAll.question_detail_info;
+                                        let question = dataAll.question_detail_info;
                                         for (var i = 0; i < question.length; i++) {
                                             trs.push(
                                                 <tr className="rd-table-tr" key={i}>
                                                     <td className="rd-table-td">{question[i].index}</td>
                                                     <td className="rd-table-td">{question[i].value}</td>
-                                                    <td className="rd-table-td positive">{question[i].user_score}</td>
+                                                    <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
                                                     <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
                                                 </tr>
                                             )
@@ -533,8 +359,8 @@ class Reportdata extends BaseComponent<{
                         <div className="t-title">教师点评</div>
                         <div className="comment-wrapper">
                             <div className="teacher">
-                                <div className="teacher-avatar"><img src={this.state.dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
-                                <div className="teacher-name">{this.state.dataAll.teacher_oriented_info.teacher_name}</div>
+                                <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
+                                <div className="teacher-name">{dataAll.teacher_review.teacher_name}</div>
                             </div>
                             <div className="comment">
                                 <i className="quot">
@@ -544,17 +370,17 @@ class Reportdata extends BaseComponent<{
                                     <img src={ret(`${__IMAGE_STATIC_PATH__}/quot2.png`)} />
                                 </i>
                                 <div>
-                                    <div>{this.state.dataAll.teacher_review.review_overall}</div>
-                                    <div>{this.state.dataAll.teacher_review.review_knowledge}</div>
-                                    <div>{this.state.dataAll.teacher_review.review_question_type}</div>
+                                    <div>{dataAll.teacher_review.review_overall}</div>
+                                    <div>{dataAll.teacher_review.review_knowledge}</div>
+                                    <div>{dataAll.teacher_review.review_question_type}</div>
                                 </div>
                             </div>
                         </div>
                     </div >
                     {/*ad*/}
                     <div className="ad">
-                        <a href={this.state.dataAll.ad.redirect_url}>
-                            <img src={this.state.dataAll.ad.img} alt="" />
+                        <a href={dataAll.ad.redirect_url}>
+                            <img src={dataAll.ad.img} alt="" />
                         </a>
                     </div>
                 </div >
@@ -563,5 +389,10 @@ class Reportdata extends BaseComponent<{
         )
     }
 }
-const selector = () => ({});
+const selector = createSelector(
+    (state: any) => state.reportdata.get('dataAll'),
+    (reportdata: Immutable.List<any>) => ({
+        dataAll: reportdata.toJS()
+    })
+)
 export = connect(selector)(Reportdata);

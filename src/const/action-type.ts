@@ -1,12 +1,12 @@
 /**
  * @fileOverview action types
- * @author Max
+ * @author zxl
  */
 
 const ACTION_TYPE = {
-    CREDIT_GET_MY_CARDS: 'CREDIT_GET_MY_CARDS',
-    CREDIT_GET_NEW_CARD: 'CREDIT_GET_NEW_CARD',
-    CREDIT_GET_CURRENT_COLLECTED_UP_COUNT: 'CREDIT_GET_CURRENT_COLLECTED_UP_COUNT'
+    GET_LOGIN: 'GET_LOGIN',
+    GET_DATA: 'GET_DATA',
+    GET_UNIEXAM:'GET_UNIEXAM'
 };
 
 export default ACTION_TYPE;
