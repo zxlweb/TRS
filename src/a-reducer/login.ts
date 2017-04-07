@@ -26,7 +26,6 @@ const login = createReducer(Immutable.fromJS({
     list:[]
 }), {
         [ACTION_TYPE.GET_LOGIN]: (state: Immutable.Map<string, any>, action: any) => {
-            console.log(action.payload);
            return state.set('list', Immutable.fromJS(action.payload))
        }
     });

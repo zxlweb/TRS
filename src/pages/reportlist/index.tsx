@@ -12,6 +12,8 @@ import REQUEST from '../../const/request';
 import Header from '../header';
 import { getLogin } from '../../a-action/login';
 import * as moment from 'moment';
+import { getStudentID, init as uisInit } from 'uis-agent';
+import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
 
 const style = _importLess('./index', __dirname);
 class Reportlist extends BaseComponent<{
@@ -19,7 +21,15 @@ class Reportlist extends BaseComponent<{
 }, {
 
     }>{
-    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
+    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
+        uisInit({
+            get: function (key: string) { return req.cookies[key] },
+            set: res.cookie,
+            remove: function (key: string) { }
+        }, req.url, req.headers['user-agent'], function(url: string){res.redirect(url)}, {wechat: WECHAT_AUTH_REDIRECT_URL});
+
+        getStudentID();
+    }
 
     setUpPage(manager: HTMLManager) {
     }
