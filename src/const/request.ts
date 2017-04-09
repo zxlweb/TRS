@@ -3,7 +3,7 @@
  * @author zxl
  */
 
-const PREFIX = 'trs/front';
+const PREFIX = 'front';
 const REQEUST = {
     SUBMIT: `${PREFIX}/user/searchByStudentID`,
     REPORTLIST: `${PREFIX}/user/searchByStudentID`,
