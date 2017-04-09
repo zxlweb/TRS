@@ -21,7 +21,7 @@
         "HTTP_PORT": 8080
     },
     "PAGE_SERVER": {
-        "HOST": "localhost",
+        "HOST": "trsc.njpeiyou.com",
         "PORT": 80
     },
     "@ALIYUN": {

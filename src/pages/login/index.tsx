@@ -26,7 +26,7 @@ class Login extends BaseComponent<{
             get: function (key: string) { return JSON.parse(req.cookies[key] || '{}') },
             set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
             remove: function (key: string) { }
-        }, req.url, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
+        }, `${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
 
         const serial = await getStudentSerial();
         res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
