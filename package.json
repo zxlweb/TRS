@@ -68,6 +68,6 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "redux-validator": "^0.2.0",
-    "uis-agent": "0.1.6"
+    "uis-agent": "0.1.6-rc1"
   }
 }
