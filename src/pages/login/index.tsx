@@ -12,13 +12,26 @@ import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
 import APP from '../../a-reducer/app';
 import { getLogin } from '../../a-action/login';
+import { getStudentSerial, init as uisInit } from 'uis-agent';
+import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
+
 const style = _importLess('./index', __dirname);
 class Login extends BaseComponent<{
 }, {
         id: string,
         exist: boolean
     }>{
-    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
+    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
+        uisInit({
+            get: function (key: string) { return JSON.parse(req.cookies[key] || '{}') },
+            set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
+            remove: function (key: string) { }
+        }, req.url, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
+
+        const serial = await getStudentSerial();
+        res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
+        throw new Error('redirected');
+    }
     setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] { }
     constructor(props: any) {

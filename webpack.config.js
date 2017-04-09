@@ -73,5 +73,11 @@ module.exports = {
             app: process.cwd() + '/src'
         },
         extensions: ['', '.ts', '.tsx', '.js']
+    },
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
     }
 };
