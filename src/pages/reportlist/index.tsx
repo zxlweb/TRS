@@ -34,6 +34,13 @@ class Reportlist extends BaseComponent<{
     constructor(props: any) {
         super(props);
     }
+    componentDidMount() {
+        const { list } = this.props;
+
+        if(list.length === 0) {
+            _storage.set('UIS', {}, {domain: '.njpeiyou.com'});
+        }
+    }
     handleReBind() {
         // initUIS({
         //     get: Storage.getJSON,

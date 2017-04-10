@@ -14,7 +14,7 @@ declare interface STORAGE {
     /**
      * 原生命名空间下设置cookie，即这种cookie变更不会在下一次刷新时自动更新到初始state中
      */
-    set(key: string, obj: any): void,
+    set(key: string, obj: any, options?: any): void,
     /**
      * 获取原生命名空间下的cookie，直接获取字符串
      */
