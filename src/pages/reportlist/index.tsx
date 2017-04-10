@@ -15,7 +15,7 @@ import REQUEST from '../../const/request';
 import Header from '../header';
 import { getLogin } from '../../a-action/login';
 import * as moment from 'moment';
-import {setLoginStudentID, init as initUIS} from 'uis-agent';
+import {setLoginStudentID, updateStudent, init as initUIS} from 'uis-agent';
 import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
 
 const style = _importLess('./index', __dirname);
@@ -42,6 +42,8 @@ class Reportlist extends BaseComponent<{
         }, location.href, navigator.userAgent, function (url: string) {  }, { wechat: WECHAT_AUTH_REDIRECT_URL });
 
         setLoginStudentID(null);
+        updateStudent({id: 0});
+        
         location.href = '/';
     }
     render() {
