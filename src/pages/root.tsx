@@ -6,7 +6,9 @@
 import * as _expressStatic from 'express-serve-static-core';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BaseComponent, HTMLManager } from 'razy/dist/lib';
+import BaseComponent from 'razy/dist/lib/base-component';
+import HTMLManager from 'razy/dist/lib/html-manager';
+import createSelector from 'razy/dist/lib/immu-reselect';
 import * as moment from 'moment';
 // set up moment
 import 'moment/locale/zh-cn';

@@ -2,40 +2,20 @@
  * @fileOverview client page entrance
  * @author Max
  */
-
-import './utils/object-assign-polyfill';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import {entrySetUp, render} from 'razy/dist/lib/entry';
 import routes from './routes';
-import { match, Router, browserHistory } from 'react-router';
-import { compose, createStore, applyMiddleware, GenericStoreEnhancer } from 'redux';
 import APP from './a-reducer/app';
-import * as Immutable from 'immutable';
+import {compose, createStore, applyMiddleware, GenericStoreEnhancer} from 'redux';
 import promiseMiddleware = require('redux-promise');
 import ValidatorMiddleware = require('redux-validator');
 import ThunkMiddleware from 'redux-thunk';
 import * as querystring from 'query-string';
-import { retinaSetUp, ret, getRequestMethod, Storage, DeviceVars, promiseExtend } from 'razy/dist/lib';
-promiseExtend();
-retinaSetUp();
-window.ret = ret;
+import * as Immutable from 'immutable';
 
-const requestMothods = getRequestMethod(function (obj: any, resolve: Function, reject: Function) {
-    if (obj.result_code === 0) {
-        resolve(obj.content);
-    } else {
-        reject(obj);
-    }
-});
-window._http = requestMothods.http;
-window._https = requestMothods.https;
-
-window._storage = Storage;
-const query = querystring.parse(location.search);
 let finalCreateStore: any, devTools: any;
 
-if (__WEBPACK_DEV__) {
+if(__WEBPACK_DEV__) {
     const createDevTools = require('redux-devtools').createDevTools;
     const LogMonitor = require('redux-devtools-log-monitor').default;
     const DockMonitor = require('redux-devtools-dock-monitor').default;
@@ -47,52 +27,37 @@ if (__WEBPACK_DEV__) {
     const persistState = require('redux-devtools').persistState;
     const getDebugSessionKey = () => {
         const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
-        return (matches && matches.length > 0) ? matches[1] : null;
+        return (matches && matches.length > 0)? matches[1] : null;
     };
     const createLogger = require('redux-logger');
     finalCreateStore = compose(
-        applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware),
-        devTools.instrument() as GenericStoreEnhancer,
-        persistState(getDebugSessionKey()) as GenericStoreEnhancer
-    )(createStore);
+       applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware, createLogger({
+           stateTransformer: (state: any) => {
+               let newState: any = {};
+               for(let i in state) {
+                   if(Immutable.Iterable.isIterable(state[i])) {
+                       newState[i] = state[i].toJS();
+                   } else {
+                       newState[i] = state[i];
+                   }
+               }
+               return newState;
+           }
+       })),
+       devTools.instrument() as GenericStoreEnhancer,
+       persistState(getDebugSessionKey()) as GenericStoreEnhancer
+   )(createStore);
 } else {
     finalCreateStore = compose(
-        applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware)
-    )(createStore);
+       applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware)
+   )(createStore);
 }
 
-
-let initialState = JSON.parse(decodeURIComponent(__INITIAL_STATE__));
-for (let i in initialState) {
-    initialState[i] = Immutable.fromJS(initialState[i]);
-}
-
-let initedFlag = JSON.parse(decodeURIComponent(__INITED_FLAG__));
-
-const store = finalCreateStore(APP, initialState);
-
-let customProps: any = {
+entrySetUp({
+    routes,
+    APP,
+    createStore: finalCreateStore,
     devTools
-};
-let deviceVars: DeviceVars = {
-    device_mobile,
-    device_phone,
-    device_tablet,
-    device_os
-};
-Object.assign(customProps, deviceVars);
-Object.assign(customProps, {initedFlag});
-
-const createElement = (Component: any, props: any) => {
-    let newProps = props;
-    Object.assign(newProps, customProps);
-    return React.createElement(Component, newProps);
-};
-
-match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
-    ReactDOM.render((
-        <Provider store={store}>
-            <Router createElement={createElement} {...renderProps} history={browserHistory} />
-        </Provider>
-    ), document.getElementById('root'));
 });
+
+render();

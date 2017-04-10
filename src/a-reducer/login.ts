@@ -3,7 +3,7 @@
  * @author zxl
  */
 
-import { createReducer } from 'razy/dist/lib';
+import { createReducer } from 'razy/dist/lib/reducer-utils';
 import ACTION_TYPE from '../const/action-type';
 import * as Immutable from 'immutable';
 

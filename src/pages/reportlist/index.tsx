@@ -3,7 +3,10 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { createSelector, BaseComponent, HTMLManager, Storage } from 'razy/dist/lib';
+import BaseComponent from 'razy/dist/lib/base-component';
+import HTMLManager from 'razy/dist/lib/html-manager';
+import createSelector from 'razy/dist/lib/immu-reselect';
+import Storage from 'razy/dist/lib/storage';
 import * as _expressStatic from 'express-serve-static-core';
 import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
