@@ -31,8 +31,8 @@ class Login extends BaseComponent<{
             remove: function (key: string) { }
         }, `http://${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
         
-        // const force = req.query ? req.query.force : false;
-        const serial = await getStudentSerial(true);
+        const force = req.query ? req.query.force : false;
+        const serial = await getStudentSerial(force);
         res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
         throw new Error('redirected');
     }
