@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { createSelector, BaseComponent, HTMLManager } from 'razy/dist/lib';
+import { createSelector, BaseComponent, HTMLManager, Storage } from 'razy/dist/lib';
 import * as _expressStatic from 'express-serve-static-core';
 import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
@@ -12,6 +12,8 @@ import REQUEST from '../../const/request';
 import Header from '../header';
 import { getLogin } from '../../a-action/login';
 import * as moment from 'moment';
+import {setLoginStudentID, init as initUIS} from 'uis-agent';
+import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
 
 const style = _importLess('./index', __dirname);
 class Reportlist extends BaseComponent<{
@@ -30,7 +32,13 @@ class Reportlist extends BaseComponent<{
         super(props);
     }
     handleReBind() {
-        _storage.remove('UIS');
+        initUIS({
+            get: Storage.getJSON,
+            set: Storage.set,
+            remove: Storage.remove
+        }, location.href, navigator.userAgent, function (url: string) {  }, { wechat: WECHAT_AUTH_REDIRECT_URL });
+
+        setLoginStudentID(null);
         location.href = '/';
     }
     render() {
