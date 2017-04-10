@@ -23,7 +23,7 @@ class Reportdata extends BaseComponent<{
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
     setUpPage(manager: HTMLManager, datas: any) {
-        if(datas[0].teacher_oriented_info.flag === false) {
+        if (datas[0].teacher_oriented_info.flag === false) {
             manager.setTag('title', `${datas[0].basic_info.user_name}的${datas[0].basic_info.exam_title}中的表现报告`);
         } else {
             manager.setTag('title', `${datas[0].basic_info.user_name}在${datas[0].basic_info.exam_title}中战胜了${(datas[0].teacher_oriented_info.user_percent).toFixed(2) * 100}%的同学`);
@@ -286,28 +286,34 @@ class Reportdata extends BaseComponent<{
                                 <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{dataAll.overall_info.mean_score}</div></div>
                                 <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{dataAll.overall_info.highest_score}</div></div>
                                 <RankChart title="总体排名分布" msg={dataAll.overall_info}></RankChart>
-                                <RankChart title="同门排名分布" msg={dataAll.teacher_oriented_info}></RankChart>
+                                {
+                                    dataAll.teacher_oriented_info.flag === false ? '' :
+                                        <RankChart title="同门排名分布" msg={dataAll.teacher_oriented_info}></RankChart>
+                                }
                             </div>
                         </div >
                         <Summarize item={dataAll.overall_info.conclusion}></Summarize>
                     </div >
                     {/*个人知识点掌握情况*/}
-                    < div className="knowledge-report report-sec" >
-                        <div className="rtitle">个人知识点掌握情况</div>
+                    {
+                        dataAll.knowledge_point_info ?
+                            <div className="knowledge-report report-sec" >
+                                <div className="rtitle">个人知识点掌握情况</div>
 
-                        <div className="xcontainer">
-                            <div id="kpcontainer" ></div>
-                        </div>
-                        <div className="xcontainer">个人能力分布
+                                <div className="xcontainer">
+                                    <div id="kpcontainer" ></div>
+                                </div>
+                                <div className="xcontainer">个人能力分布
                              <canvas id="kRadarChart" width="300" ref="kRadarChart" height="300"></canvas>
-                        </div>
-                        <div className="xcontainer">
-                            <div className="table-title">知识点详情:</div>
-                            <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
-                        </div>
-                        <Summarize item={dataAll.knowledge_point_info.conclusion}></Summarize>
+                                </div>
+                                <div className="xcontainer">
+                                    <div className="table-title">知识点详情:</div>
+                                    <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
+                                </div>
+                                <Summarize item={dataAll.knowledge_point_info.conclusion}></Summarize>
 
-                    </div >
+                            </div> : ''
+                    }
                     {/*个人题型得分情况*/}
                     < div className="score-report report-sec" >
                         <div className="r-title">题型分数比重分布</div>
@@ -326,38 +332,41 @@ class Reportdata extends BaseComponent<{
 
                     </div >
                     {/*个人小分分析*/}
-                    <div>
-                        <div className="rtitle">个人小分分析</div>
-                        <table className="rd-table">
-                            <thead className="rd-table-thead">
-                                <tr className="rd-table-th">
-                                    <td className="rd-table-td">题号</td>
-                                    <td className="rd-table-td">分值</td>
-                                    <td className="rd-table-td">你的得分</td>
-                                    <td className="rd-table-td">平均得分</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    (() => {
-                                        let trs = [];
-                                        let question = dataAll.question_detail_info;
-                                        for (var i = 0; i < question.length; i++) {
-                                            trs.push(
-                                                <tr className="rd-table-tr" key={i}>
-                                                    <td className="rd-table-td">{question[i].index}</td>
-                                                    <td className="rd-table-td">{question[i].value}</td>
-                                                    <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
-                                                    <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
-                                                </tr>
-                                            )
+                    {
+                        dataAll.question_detail_info.length !== 0 ?
+                            <div>
+                                <div className="rtitle">个人小分分析</div>
+                                <table className="rd-table">
+                                    <thead className="rd-table-thead">
+                                        <tr className="rd-table-th">
+                                            <td className="rd-table-td">题号</td>
+                                            <td className="rd-table-td">分值</td>
+                                            <td className="rd-table-td">你的得分</td>
+                                            <td className="rd-table-td">平均得分</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            (() => {
+                                                let trs = [];
+                                                let question = dataAll.question_detail_info;
+                                                for (var i = 0; i < question.length; i++) {
+                                                    trs.push(
+                                                        <tr className="rd-table-tr" key={i}>
+                                                            <td className="rd-table-td">{question[i].index}</td>
+                                                            <td className="rd-table-td">{question[i].value}</td>
+                                                            <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
+                                                            <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                return trs;
+                                            })()
                                         }
-                                        return trs;
-                                    })()
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                    </tbody>
+                                </table>
+                            </div> : ''
+                    }
                     {/*教师点评*/}
                     < div className="t-comment" >
                         <div className="t-title">教师点评</div>
