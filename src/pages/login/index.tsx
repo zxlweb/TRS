@@ -16,6 +16,7 @@ import APP from '../../a-reducer/app';
 import { getLogin } from '../../a-action/login';
 import { getStudentSerial, init as uisInit } from 'uis-agent';
 import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
+import * as querystring from 'query-string';
 
 const style = _importLess('./index', __dirname);
 class Login extends BaseComponent<{
@@ -29,8 +30,9 @@ class Login extends BaseComponent<{
             set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
             remove: function (key: string) { }
         }, `http://${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
-
-        const serial = await getStudentSerial();
+        
+        const force = req.query ? req.query.force : false;
+        const serial = await getStudentSerial(force);
         res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
         throw new Error('redirected');
     }

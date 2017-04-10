@@ -51,7 +51,7 @@ class Reportlist extends BaseComponent<{
         // UIS.user.login_student = null;
         // _storage.set('UIS', UIS, {domain: '.njpeiyou.com'});
 
-        location.href = `http://uisc.njpeiyou.com/bind?redirect=${encodeURIComponent(`http://${__PAGE_SERVER_HOST__}`)}`;
+        location.href = `http://uisc.njpeiyou.com/bind?redirect=${encodeURIComponent(`http://${__PAGE_SERVER_HOST__}/?force=true`)}`;
     }
     render() {
 
