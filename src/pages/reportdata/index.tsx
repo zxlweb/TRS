@@ -23,7 +23,11 @@ class Reportdata extends BaseComponent<{
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
     setUpPage(manager: HTMLManager, datas: any) {
-        manager.setTag('title', `${datas[0].basic_info.user_name}在${datas[0].basic_info.exam_title}中战胜了${(datas[0].teacher_oriented_info.user_percent).toFixed(2) * 100}%的同学`);
+        if(datas[0].teacher_oriented_info.flag === false) {
+            manager.setTag('title', `${datas[0].basic_info.user_name}的${datas[0].basic_info.exam_title}中的表现报告`);
+        } else {
+            manager.setTag('title', `${datas[0].basic_info.user_name}在${datas[0].basic_info.exam_title}中战胜了${(datas[0].teacher_oriented_info.user_percent).toFixed(2) * 100}%的同学`);
+        }
     }
     getInitDataActionImp(props: any): void | any[] {
         return [
