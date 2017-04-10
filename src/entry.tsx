@@ -57,7 +57,14 @@ entrySetUp({
     routes,
     APP,
     createStore: finalCreateStore,
-    devTools
+    devTools,
+    dataFlagResolver: function (obj: any, resolve: Function, reject: Function) {
+        if (obj.result_code === 0) {
+            resolve(obj.content);
+        } else {
+            reject(obj);
+        }
+    },
 });
 
 render();
