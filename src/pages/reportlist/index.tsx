@@ -35,16 +35,16 @@ class Reportlist extends BaseComponent<{
         super(props);
     }
     handleReBind() {
-        initUIS({
-            get: Storage.getJSON,
-            set: Storage.set,
-            remove: Storage.remove
-        }, location.href, navigator.userAgent, function (url: string) {  }, { wechat: WECHAT_AUTH_REDIRECT_URL });
+        // initUIS({
+        //     get: Storage.getJSON,
+        //     set: Storage.set,
+        //     remove: Storage.remove
+        // }, location.href, navigator.userAgent, function (url: string) {  }, { wechat: WECHAT_AUTH_REDIRECT_URL });
 
-        setLoginStudentID(null);
-        updateStudent({id: 0});
-        
-        location.href = '/';
+        // setLoginStudentID(null);
+        // updateStudent({id: 0});
+
+        location.href = 'http://uisc.njpeiyou.com/bind';
     }
     render() {
 
