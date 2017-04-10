@@ -29,6 +29,10 @@ class Reportlist extends BaseComponent<{
     constructor(props: any) {
         super(props);
     }
+    handleReBind() {
+        _storage.remove('UIS');
+        location.href = '/';
+    }
     render() {
 
         const { list } = this.props;
@@ -40,7 +44,7 @@ class Reportlist extends BaseComponent<{
                 <div className="list-container">
                     {
                         list.length === 0 ?
-                        <div className="usr-info">很抱歉，没有您的报告</div> :
+                        <div className="usr-info">很抱歉，没有您的报告 <a onClick={this.handleReBind.bind(this)}>重新绑定</a></div> :
                         <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
                     }
                     <div id="report-list">
