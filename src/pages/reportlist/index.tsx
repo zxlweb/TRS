@@ -28,7 +28,6 @@ class Reportlist extends BaseComponent<{
     }
     constructor(props: any) {
         super(props);
-
     }
     render() {
 
@@ -39,7 +38,11 @@ class Reportlist extends BaseComponent<{
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
                 <Header></Header>
                 <div className="list-container">
-                    <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
+                    {
+                        list.length === 0 ?
+                        <div className="usr-info">很抱歉，没有您的报告</div> :
+                        <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
+                    }
                     <div id="report-list">
                         <h3 className="report-title">报告列表</h3>
                         {
