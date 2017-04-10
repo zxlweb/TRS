@@ -77,7 +77,7 @@ class Reportlist extends BaseComponent<{
                         }
                     </div>
                     <div className="share-info">
-                        <img src={ret(`${__IMAGE_STATIC_PATH__}/wechatshare.png`)} />
+                        <img src={`${__IMAGE_STATIC_PATH__}/wechatshare.png`} />
                     </div>
                 </div>
                 <footer>Copyright © 2017 南京学而思市场部</footer>

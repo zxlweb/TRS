@@ -364,10 +364,10 @@ class Reportdata extends BaseComponent<{
                             </div>
                             <div className="comment">
                                 <i className="quot">
-                                    <img src={ret(`${__IMAGE_STATIC_PATH__}/quot.png`)} />
+                                    <img src={`${__IMAGE_STATIC_PATH__}/quot.png`} />
                                 </i>
                                 <i className="quot2">
-                                    <img src={ret(`${__IMAGE_STATIC_PATH__}/quot2.png`)} />
+                                    <img src={`${__IMAGE_STATIC_PATH__}/quot2.png`} />
                                 </i>
                                 <div>
                                     <div>{dataAll.teacher_review.review_overall}</div>

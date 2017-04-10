@@ -4,7 +4,7 @@
     "DIST_PATH": "dist",
     "JS_LIB_PATH": "/dist/lib",
     "JS_STATIC_PATH": "/dist/js",
-    "IMAGE_STATIC_PATH": "http://njxes.oss-cn-shanghai.aliyuncs.com/wt/app_resource",
+    "IMAGE_STATIC_PATH": "http://njxes.oss-cn-shanghai.aliyuncs.com/trs/c/app_resource",
     "STYLE_STATIC_PATH": "/dist/style",
     "RETINA_DEFAULT_RATIO": "@2x",
     "STUB_SERVER": {
@@ -29,7 +29,7 @@
         "ACCESS_KEY_SECRET": "MZEtpaB4ddwWTjiJe4kJN2O5MwMGw0",
         "OSS_ENDPOINT": "oss-cn-shanghai.aliyuncs.com",
         "BUCKET": "njxes",
-        "APP_IMG_DIRECTORY": "wt/app_resource"
+        "APP_IMG_DIRECTORY": "trs/c/app_resource"
     },
     "CROSSDOMAIN": "*"
 }

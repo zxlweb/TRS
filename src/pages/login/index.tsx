@@ -75,9 +75,9 @@ class Login extends BaseComponent<{
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
                 <div className='login-pagewrap'>
                     <h3>学而思 Test Report System</h3>
-                    <img src={ret(`${__IMAGE_STATIC_PATH__}/logo.png`)} className="img" />
+                    <img src={`${__IMAGE_STATIC_PATH__}/logo.png`} className="img" />
                     {/* TO DO 2 */}
-                    <div className="login-page" style={{ backgroundImage: `url("${ret(__IMAGE_STATIC_PATH__ + '/bg.png')}")` }}></div>
+                    <div className="login-page" style={{ backgroundImage: `url("${__IMAGE_STATIC_PATH__ + '/bg.png'}")` }}></div>
                     <div className='login'>
                         <div data-show={this.state.exist} className='err-msg'>账户不存在</div>
                         <form >
