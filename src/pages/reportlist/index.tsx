@@ -44,7 +44,7 @@ class Reportlist extends BaseComponent<{
         // setLoginStudentID(null);
         // updateStudent({id: 0});
 
-        location.href = 'http://uisc.njpeiyou.com/bind';
+        location.href = `http://uisc.njpeiyou.com/bind?redirect=${encodeURIComponent(`http://${__PAGE_SERVER_HOST__}`)}`;
     }
     render() {
 
