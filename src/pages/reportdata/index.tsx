@@ -45,7 +45,9 @@ class Reportdata extends BaseComponent<{
         const Highcharts = require('highcharts');
         this.PaintContainer(dataAll, Highcharts);
         const Chart = require('chart.js');
-        this.PaintPieRadarcontainer(dataAll.knowledge_point_info.overall, dataAll.knowledge_point_info.personal, Highcharts, 'kpcontainer', Chart, this.refs.kRadarChart);
+        if(dataAll.knowledge_point_info) {
+            this.PaintPieRadarcontainer(dataAll.knowledge_point_info.overall, dataAll.knowledge_point_info.personal, Highcharts, 'kpcontainer', Chart, this.refs.kRadarChart);
+        }
         this.PaintPieRadarcontainer(dataAll.question_type_info.overall, dataAll.question_type_info.personal, Highcharts, 'spcontainer', Chart, this.refs.SocreRadarChart);
     }
     PaintContainer(dataAll: any, Highcharts: any) {
