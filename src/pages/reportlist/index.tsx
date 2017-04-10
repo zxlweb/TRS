@@ -36,10 +36,6 @@ class Reportlist extends BaseComponent<{
     }
     componentDidMount() {
         const { list } = this.props;
-
-        if(list.length === 0) {
-            _storage.set('UIS', {}, {domain: '.njpeiyou.com'});
-        }
     }
     handleReBind() {
         // initUIS({
@@ -50,6 +46,10 @@ class Reportlist extends BaseComponent<{
 
         // setLoginStudentID(null);
         // updateStudent({id: 0});
+        const UIS = _storage.getJSON('UIS');
+        UIS.user = UIS.user || {};
+        UIS.user.login_student = null;
+        _storage.set('UIS', UIS, {domain: '.njpeiyou.com'});
 
         location.href = `http://uisc.njpeiyou.com/bind?redirect=${encodeURIComponent(`http://${__PAGE_SERVER_HOST__}`)}`;
     }
