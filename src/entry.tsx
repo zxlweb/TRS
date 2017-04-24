@@ -29,21 +29,9 @@ if(__WEBPACK_DEV__) {
         const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
         return (matches && matches.length > 0)? matches[1] : null;
     };
-    const createLogger = require('redux-logger');
+    // const createLogger = require('redux-logger');
     finalCreateStore = compose(
-       applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware, createLogger({
-           stateTransformer: (state: any) => {
-               let newState: any = {};
-               for(let i in state) {
-                   if(Immutable.Iterable.isIterable(state[i])) {
-                       newState[i] = state[i].toJS();
-                   } else {
-                       newState[i] = state[i];
-                   }
-               }
-               return newState;
-           }
-       })),
+       applyMiddleware(ValidatorMiddleware(), ThunkMiddleware, promiseMiddleware),
        devTools.instrument() as GenericStoreEnhancer,
        persistState(getDebugSessionKey()) as GenericStoreEnhancer
    )(createStore);
