@@ -19,6 +19,7 @@ class RankChart extends React.Component<{
     componentDidMount() {
         this.positionCompute();
     }
+
     positionCompute() {
         let disLeft: number, disRight: number, width: number;
         let rankChartWidth, rcYourWidth, rcYourContent, rcYourContenWidth;
