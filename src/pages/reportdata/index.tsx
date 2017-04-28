@@ -108,7 +108,7 @@ class Reportdata extends BaseComponent<{
                     type: 'spline',
                     name: '分数段人数',
                     data: zArr,
-                    color:'#5e8ca8',
+                    color: '#5e8ca8',
                     marker: {
                         lineWidth: 1,
                         lineColor: '#f5a623',
