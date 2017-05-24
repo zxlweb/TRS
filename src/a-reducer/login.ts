@@ -23,11 +23,11 @@ import * as Immutable from 'immutable';
  */
 
 const login = createReducer(Immutable.fromJS({
-    list:[]
+    list: []
 }), {
         [ACTION_TYPE.GET_LOGIN]: (state: Immutable.Map<string, any>, action: any) => {
-           return state.set('list', Immutable.fromJS(action.payload))
-       }
+            return state.set('list', Immutable.fromJS(action.payload))
+        }
     });
 
 export default login;

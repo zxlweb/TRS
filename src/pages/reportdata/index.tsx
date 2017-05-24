@@ -124,7 +124,6 @@ class Reportdata extends BaseComponent<{
         });
 
     }
-
     PaintPieRadarcontainer(overall: any, personal: any, Highcharts: any, container: string, Chart: any, ctx: any) {
         let kpData: any = [];
         let temArr: any = [];
@@ -141,7 +140,6 @@ class Reportdata extends BaseComponent<{
             radarValuemy.push(personal[index].score_rate)
         })
         let title;
-
         if (Highcharts && container == 'kpcontainer') {
             title = "知识点分数比重分布";
         } else if (Highcharts && container == 'spcontainer') {
@@ -234,49 +232,58 @@ class Reportdata extends BaseComponent<{
         return (
             <div id="app-report">
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
-                <Header></Header>
                 <div className="report-container">
+                    <div className="top-title">{dataAll.basic_info.exam_title}</div>
                     {/*basic_info*/}
                     <div className="basic-info-sec">
-                        <div className="usr-info">你好，{dataAll.basic_info.user_name}!欢迎来到TRS!</div>
                         <div className="info-sec">
-                            <div className="title">考试名称：</div>
-                            <div className="detail">{dataAll.basic_info.exam_title}</div>
+                            <div className="title" style={{ backgroundColor: '#dbecf8' }}>学员名称</div>
+                            <div className="detail">{dataAll.basic_info.user_name}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">考试时间：</div>
+                            <div className="title" style={{ backgroundColor: '#c1e5f3' }}>考试时间</div>
                             <div className="detail">{fullYear}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">个人分数：</div>
+                            <div className="title" style={{ backgroundColor: '#51aae4', color: '#fff' }}>个人分数</div>
                             <div className="detail">{`${dataAll.basic_info.user_total_score}/${dataAll.basic_info.exam_total_score}`}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">个人排名：</div>
+                            <div className="title" style={{ backgroundColor: '#2270a7', color: '#fff' }}>个人排名</div>
                             <div className="detail">{dataAll.basic_info.user_rank}</div>
                         </div>
-                        <div className="info-sec">
-                            <div className="title">个人奖项：</div>
+                        <div className="info-sec" style={{ marginBottom: '0px' }}>
+                            <div className="title" style={{ backgroundColor: '#074977', color: '#fff' }}>个人奖项</div>
                             <div className="detail">{dataAll.basic_info.user_prize}</div>
                         </div>
+                        <div className="cup">
+                            <img src={`${__IMAGE_STATIC_PATH__}/gold-cup@2x.png`} alt="" />
+                        </div>
                     </div>
-                    {/*个人能力分布*/}
+                    {/*试卷说明*/}
                     <div className="overall-report report-sec">
-                        <div className="r-title">试卷说明</div>
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i>试卷说明<i className="r-title-badge after"></i></span>
+                        </div>
                         <div className="description">
                             <div className="des-detail">
                                 {dataAll.overall_info.statement}
                             </div>
                         </div>
-                        <div className="r-title">年级总体情况</div>
+                    </div>
+                    {/*年级总体情况*/}
+                    <div className="overall-report overall-sec">
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i>年级总体情况<i className="r-title-badge after"></i></span>
+                        </div>
                         <div className="xcontainer">
                             <div className="pull-right demo-wrap"><i className="demo"></i>你所在的分数段</div>
                             <div id="container"></div>
                         </div>
                         <div className="rcontainer">
                             <div className="score-des">
-                                <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{dataAll.overall_info.mean_score}</div></div>
-                                <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{dataAll.overall_info.highest_score}</div></div>
+                                <div className="average-score score-des-detail"><div className="score-title" style={{ backgroundColor: '#a8cdf7' }}>本次考试平均分</div><div className="score-sub" style={{ backgroundColor: '#d9e6f5' }}>{dataAll.overall_info.mean_score}</div></div>
+                                <div className="highest-score score-des-detail"><div className="score-title" style={{ backgroundColor: '#a8e0f7' }}>本次考试最高分</div><div className="score-sub" style={{ backgroundColor: '#d4ddf5' }}>{dataAll.overall_info.highest_score}</div></div>
                                 <RankChart title="总体排名分布" msg={dataAll.overall_info} key="1"></RankChart>
                                 {
                                     dataAll.teacher_oriented_info.flag === false ? '' :
@@ -285,14 +292,19 @@ class Reportdata extends BaseComponent<{
                             </div>
                         </div >
                         <Summarize item={dataAll.overall_info.conclusion}></Summarize>
-                    </div >
+                    </div>
+
+
                     {/*个人知识点掌握情况*/}
                     {
                         dataAll.knowledge_point_info ?
                             <div className="knowledge-report report-sec" >
-                                <div className="rtitle">个人知识点掌握情况</div>
 
-                                <div className="xcontainer">
+                                <div className="r-title">
+                                    <span className="r-title-sub"> <i className="r-title-badge before"></i>个人知识点掌握情况<i className="r-title-badge after"></i></span>
+                                </div>
+
+                                <div className="xcontainer" style={{ marginBottom: '20px', paddingTop: '40px;' }}>
                                     <div id="kpcontainer" ></div>
                                 </div>
                                 <div className="xcontainer">个人能力分布
@@ -326,7 +338,7 @@ class Reportdata extends BaseComponent<{
                     {/*个人小分分析*/}
                     {
                         dataAll.question_detail_info.length !== 0 ?
-                            <div>
+                            <div className="personal-report">
                                 <div className="rtitle">个人小分分析</div>
                                 <table className="rd-table">
                                     <thead className="rd-table-thead">

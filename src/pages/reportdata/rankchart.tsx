@@ -10,18 +10,14 @@ class RankChart extends React.Component<{
     msg: any
     title: string,
     key: string
-
 }, {
-
-
     }>{
     componentDidMount() {
         this.positionCompute();
     }
-
     positionCompute() {
         let disLeft: number, disRight: number, width: number;
-        let rankChartWidth, rcYourWidth, rcYourContent, rcYourContenWidth;
+        let rankChartWidth, rcYourWidth, rcYourContent: any, rcYourContenWidth: number;
         rankChartWidth = ReactDOM.findDOMNode(this.refs.rankchart).clientWidth;
         rcYourWidth = ReactDOM.findDOMNode(this.refs.rcYour).clientWidth;
         disLeft = rcYourWidth;
@@ -29,7 +25,6 @@ class RankChart extends React.Component<{
         rcYourContent = ReactDOM.findDOMNode(this.refs.rcYourContent);
         rcYourContenWidth = rcYourContent.clientWidth;
         width = parseInt(rcYourContenWidth / 2);
-        console.log(rcYourContenWidth);
         let pos;
         if (disLeft > disRight) {
             //   在右边
@@ -58,14 +53,11 @@ class RankChart extends React.Component<{
     render() {
         let title = this.props.title;
         let _msg = this.props.msg || {};
-
         let myrank = function () {
             if (_msg.user_percent) {
                 let pct = _msg.user_percent * 1
                 return (pct * 100).toFixed(2) + '%'
             }
-
-
         };
         let goodrank = function () {
             if (_msg.high_percent) {
@@ -78,10 +70,7 @@ class RankChart extends React.Component<{
                 let pct = _msg.mean_percent * 1
                 return (pct * 100).toFixed(2) + '%'
             }
-
         };
-
-
         return (
             <div className="rank-container">
                 <h3>{this.props.title}</h3>
@@ -89,24 +78,14 @@ class RankChart extends React.Component<{
                     <div className="rc fair" style={{ width: fairrank() }}>
                         <div className="subrc">
                             <span className="round round-gray">
-                                <span className="sanjiaoxin-out">
-                                    <span className="sanjiaoxin gray"></span>
-                                    <span className="sanjiaoxin-border gray"></span>
-                                </span>
 
-                                <span className="av">平均线</span>
                             </span>
                         </div>
                     </div>
                     <div className="rc good" style={{ width: goodrank() }} >
                         <div className="subrc">
                             <span className="round round-blue">
-                                <span className="sanjiaoxin-out">
-                                    <span className="sanjiaoxin blue"></span>
-                                    <span className="sanjiaoxin-border blue"></span>
-                                </span>
 
-                                <span className="gd">优秀线</span>
                             </span>
                         </div>
 
