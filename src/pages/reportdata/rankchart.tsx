@@ -38,6 +38,7 @@ class RankChart extends React.Component<{
             rcYourContent.style.right = pos + 'px';
         } else {
 
+
             //   在左边
             if (width <= disLeft) {
                 // 可以放在中间

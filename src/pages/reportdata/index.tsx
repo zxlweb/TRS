@@ -22,6 +22,7 @@ const style = _importLess('./index', __dirname);
 class Reportdata extends BaseComponent<{
     dataAll: any
 }, {
+
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
     setUpPage(manager: HTMLManager, datas: any) {

@@ -32,6 +32,7 @@ class Xtable extends React.Component<{
                 }
                 temArr.push(obj);
             }
+
             )
         }
 
