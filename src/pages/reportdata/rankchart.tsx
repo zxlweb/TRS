@@ -24,7 +24,7 @@ class RankChart extends React.Component<{
         disRight = rankChartWidth - rcYourWidth;
         rcYourContent = ReactDOM.findDOMNode(this.refs.rcYourContent);
         rcYourContenWidth = rcYourContent.clientWidth;
-        width = parseInt(rcYourContenWidth / 2);
+        width = parseInt((rcYourContenWidth / 2) + '');
         let pos;
         if (disLeft > disRight) {
             //   在右边
