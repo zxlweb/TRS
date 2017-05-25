@@ -61,6 +61,8 @@ gulp.task('clean', function (done) {
 // ---------------------------------------------------------
 // production
 gulp.task('image compression', ['clean'], function () {
+    var imagemin = require('/usr/lib/node_modules/gulp-imagemin');
+
     return gulp.src([path.join(SRC_DIR, IMG_SRC_DIR, '**')])
         .pipe(cache(imagemin(), {
             fileCache: new cache.Cache({ tmpDir: '/home/build_cache', cacheDirName: packageFile.name + '-cache' })
@@ -199,4 +201,3 @@ gulp.task('watch img', ['move img once'], function () {
 gulp.task('default', ['clean', 'image compression', 'update img to oss', 'compile ts', 'webpack', 'compile less', 'move lib']);
 gulp.task('dev', ['watch webpack', 'watch ts', 'watch lib', 'watch img', 'watch less']);
 // ---------------------------------------------------------
-
