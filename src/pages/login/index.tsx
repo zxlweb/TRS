@@ -25,16 +25,16 @@ class Login extends BaseComponent<{
         exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        uisInit({
-            get: function (key: string) { return JSON.parse(req.cookies[key] || '{}') },
-            set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
-            remove: function (key: string) { }
-        }, `http://${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
+        // uisInit({
+        //     get: function (key: string) { return JSON.parse(req.cookies[key] || '{}') },
+        //     set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
+        //     remove: function (key: string) { }
+        // }, `http://${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
         
-        const force = req.query ? req.query.force : false;
-        const serial = await getStudentSerial(force);
-        res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
-        throw new Error('redirected');
+        // const force = req.query ? req.query.force : false;
+        // const serial = await getStudentSerial(force);
+        // res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
+        // throw new Error('redirected');
     }
     setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] { }

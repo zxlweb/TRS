@@ -42,12 +42,10 @@ class Reportdata extends BaseComponent<{
     componentDidMount() {
         super.componentDidMount();
         const { dispatch, dataAll } = this.props;
-
-
         const Highcharts = require('highcharts');
         this.PaintContainer(dataAll, Highcharts);
         const Chart = require('chart.js');
-        if(dataAll.knowledge_point_info) {
+        if (dataAll.knowledge_point_info) {
             this.PaintPieRadarcontainer(dataAll.knowledge_point_info.overall, dataAll.knowledge_point_info.personal, Highcharts, 'kpcontainer', Chart, this.refs.kRadarChart);
         }
         this.PaintPieRadarcontainer(dataAll.question_type_info.overall, dataAll.question_type_info.personal, Highcharts, 'spcontainer', Chart, this.refs.SocreRadarChart);
@@ -55,18 +53,24 @@ class Reportdata extends BaseComponent<{
     PaintContainer(dataAll: any, Highcharts: any) {
         var xData = dataAll.overall_info;
         var xArr: any = [], yArr: any = [], zArr: any = [], myscore = dataAll.basic_info.user_total_score;
+        var deviation = 40;
         xData.score_segments.forEach(function (score: any) {
             xArr.push(score.start_point + '-' + score.end_point)
             if ((myscore * 1 <= score.end_point * 1) && (myscore * 1 > score.start_point * 1)) {
-                yArr.push({ y: score.count, color: '#FF6384' })
-                zArr.push({ y: score.count + 20 })
+                yArr.push({ y: score.count, color: '#f6bc5d' })
+                zArr.push({ y: score.count + deviation })
             } else {
                 yArr.push(score.count)
-                zArr.push(score.count + 20)
+                zArr.push(score.count + deviation)
             }
         })
 
         Highcharts.chart('container', {
+            chart: {
+                height: 280,
+                type: 'spline'
+            },
+
             title: {
                 text: ''
             },
@@ -74,76 +78,52 @@ class Reportdata extends BaseComponent<{
                 enabled: false
             },
             xAxis: {
-                categories: xArr,
-                title: {
-                    text: '分数段'
-                }
+                categories: xArr
             },
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    format: '{value}人',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                title: {
-                    text: '人数',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                }
-            }, { // Primary yAxis
-                labels: {
-                    format: '{value}人',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                title: {
-                    text: '',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
+            yAxis: [
+                { // Primary yAxis
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: '#6a7381'
+                        },
+                        align: 'center'
+                    },
+                    title: {
+                        text: ''
                     }
                 }
-            }],
-            labels: {
-                items: [{
-                    html: '',
-                    style: {
-                        left: '100px',
-                        top: '18px',
-                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-                    }
-                }]
-            },
-            series: [{
-                type: 'column',
-                name: '各分数段人数',
-                data: yArr
-            }, {
-                type: 'spline',
-                name: '分数段人数',
-                data: zArr,
-                marker: {
-                    lineWidth: 2,
-                    lineColor: Highcharts.getOptions().colors[3],
-                    fillColor: 'white'
-                }
-            }],
-            tooltip: {
-                valueSuffix: '人',
-                formatter: function () {
-                    var x = '<b>' + this.x + '</b><br/>';
-                    if (this.series.name === "分数段人数") {
-                        return x + this.series.name + ":" + (this.y - 20)
-                    }
-                }
-            },
+            ],
 
+            series: [
+                {
+                    type: 'column',
+                    name: '各分数段人数',
+                    data: yArr,
+                    color: '#53a8e2',
+                    groupPadding: 0.05
+
+                },
+                {
+                    type: 'spline',
+                    name: '分数段人数',
+                    data: zArr,
+                    color: '#5e8ca8',
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#f5a623',
+                        fillColor: '#f8e71c'
+                    },
+                    lineWidth: 1.5,
+                    tooltip: {
+                        valueSuffix: '人',
+                        pointFormat: ' {series.name}: <b>{point.y}</b><br/>'
+                    }
+                }
+            ]
         });
 
     }
-
     PaintPieRadarcontainer(overall: any, personal: any, Highcharts: any, container: string, Chart: any, ctx: any) {
         let kpData: any = [];
         let temArr: any = [];
@@ -159,55 +139,63 @@ class Reportdata extends BaseComponent<{
             radarValueall.push(ele.mean_sr)
             radarValuemy.push(personal[index].score_rate)
         })
+        let title;
         if (Highcharts && container == 'kpcontainer') {
-            Highcharts.chart(container, {
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false
-                },
-                credits: {
-                    enabled: false
-                },
-                title: {
-                    text: '知识点分数比重分布'
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                series: [{
-                    type: 'pie',
-                    name: '知识点分数比重分布',
-                    data: kpData
-                }]
-            })
-
+            title = "知识点分数比重分布";
         } else if (Highcharts && container == 'spcontainer') {
-            Highcharts.chart(container, {
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false
-                },
-                credits: {
-                    enabled: false
-                },
-                title: {
-                    text: '题型分数比重分布'
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                series: [{
-                    type: 'pie',
-                    name: '题型分数比重分布',
-                    data: kpData
-                }]
-            })
-
+            title = "题型分数比重分布";
         }
+        Highcharts.chart(container, {
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: 20,
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#666',
+                            fontSize: '10px'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 270,
+                    colors: ['#9eb5d1', '#d8d8d8', '#074977', '#2270a7', '#51aae4', '#76ddfb', '#dbecf8', '#9eb5d1']
+                }
+            },
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                type: 'pie'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: title,
+                style: {
+                    color: '#333',
+                    fontSize: '12px'
+                }
+            },
+            series: [{
+                type: 'pie',
+                innerSize: '60%',
+                name: title,
+                data: kpData
+            }],
+            tooltip: {
+                backgroundColor: 'rgba(90,101,116,0.8)',
+                borderColor: 'rgba(90,101,116,0.8)',
+                style: {
+                    color: 'white'
+                },
+                padding: 10,
+                headerFormat: '',
+                pointFormat: '<span style="color:{point.color}">\u25CF</span> <span style="color:{point.color}">{point.name}:</span> <b style="color:white">{point.y}</b><br/>',
+            }
+        })
         // 绘制个人能力分布图
-
         let myRadarChart = new Chart(ctx, {
             type: 'radar',
             data: {
@@ -246,71 +234,86 @@ class Reportdata extends BaseComponent<{
         return (
             <div id="app-report">
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
-                <Header></Header>
                 <div className="report-container">
+                    <div className="top-title">{dataAll.basic_info.exam_title}</div>
                     {/*basic_info*/}
                     <div className="basic-info-sec">
-                        <div className="usr-info">你好，{dataAll.basic_info.user_name}!欢迎来到TRS!</div>
                         <div className="info-sec">
-                            <div className="title">考试名称：</div>
-                            <div className="detail">{dataAll.basic_info.exam_title}</div>
+                            <div className="title" style={{ backgroundColor: '#dbecf8' }}>学员名称</div>
+                            <div className="detail">{dataAll.basic_info.user_name}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">考试时间：</div>
+                            <div className="title" style={{ backgroundColor: '#c1e5f3' }}>考试时间</div>
                             <div className="detail">{fullYear}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">个人分数：</div>
+                            <div className="title" style={{ backgroundColor: '#51aae4', color: '#fff' }}>个人分数</div>
                             <div className="detail">{`${dataAll.basic_info.user_total_score}/${dataAll.basic_info.exam_total_score}`}</div>
                         </div>
                         <div className="info-sec">
-                            <div className="title">个人排名：</div>
+                            <div className="title" style={{ backgroundColor: '#2270a7', color: '#fff' }}>个人排名</div>
                             <div className="detail">{dataAll.basic_info.user_rank}</div>
                         </div>
-                        <div className="info-sec">
-                            <div className="title">个人奖项：</div>
+                        <div className="info-sec" style={{ marginBottom: '0px' }}>
+                            <div className="title" style={{ backgroundColor: '#074977', color: '#fff' }}>个人奖项</div>
                             <div className="detail">{dataAll.basic_info.user_prize}</div>
                         </div>
+                        <div className="cup">
+                            <img src={`${__IMAGE_STATIC_PATH__}/gold-cup@2x.png`} alt="" />
+                        </div>
                     </div>
-                    {/*个人能力分布*/}
+                    {/*试卷说明*/}
                     <div className="overall-report report-sec">
-                        <div className="r-title">试卷说明</div>
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i>试卷说明<i className="r-title-badge after"></i></span>
+                        </div>
                         <div className="description">
                             <div className="des-detail">
                                 {dataAll.overall_info.statement}
                             </div>
                         </div>
-                        <div className="r-title">年级总体情况</div>
+                    </div>
+                    {/*年级总体情况*/}
+                    <div className="overall-report overall-sec">
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i>年级总体情况<i className="r-title-badge after"></i></span>
+                        </div>
                         <div className="xcontainer">
-                            <div><i className="demo"></i>你所在的分数段</div>
+                            <div className="pull-right demo-wrap"><i className="demo"></i>你所在的分数段</div>
                             <div id="container"></div>
                         </div>
                         <div className="rcontainer">
                             <div className="score-des">
-                                <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{dataAll.overall_info.mean_score}</div></div>
-                                <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{dataAll.overall_info.highest_score}</div></div>
-                                <RankChart title="总体排名分布" msg={dataAll.overall_info}></RankChart>
+                                <div className="average-score score-des-detail"><div className="score-title" style={{ backgroundColor: '#a8cdf7' }}>本次考试平均分</div><div className="score-sub" style={{ backgroundColor: '#d9e6f5' }}>{dataAll.overall_info.mean_score}</div></div>
+                                <div className="highest-score score-des-detail"><div className="score-title" style={{ backgroundColor: '#a8e0f7' }}>本次考试最高分</div><div className="score-sub" style={{ backgroundColor: '#d4ddf5' }}>{dataAll.overall_info.highest_score}</div></div>
+                                <RankChart title="总体排名分布" msg={dataAll.overall_info} key="1"></RankChart>
                                 {
                                     dataAll.teacher_oriented_info.flag === false ? '' :
-                                        <RankChart title="同门排名分布" msg={dataAll.teacher_oriented_info}></RankChart>
+                                        <RankChart title="同门排名分布" msg={dataAll.teacher_oriented_info} key="2"></RankChart>
                                 }
                             </div>
                         </div >
                         <Summarize item={dataAll.overall_info.conclusion}></Summarize>
-                    </div >
+                    </div>
+
+
                     {/*个人知识点掌握情况*/}
                     {
                         dataAll.knowledge_point_info ?
                             <div className="knowledge-report report-sec" >
-                                <div className="rtitle">个人知识点掌握情况</div>
+
+                                <div className="r-title">
+                                    <span className="r-title-sub"> <i className="r-title-badge before"></i>个人知识点掌握情况<i className="r-title-badge after"></i></span>
+                                </div>
 
                                 <div className="xcontainer">
                                     <div id="kpcontainer" ></div>
                                 </div>
-                                <div className="xcontainer">个人能力分布
-                             <canvas id="kRadarChart" width="300" ref="kRadarChart" height="300"></canvas>
-                                </div>
                                 <div className="xcontainer">
+                                    <div className="radar-title">个人能力分布</div>
+                                    <canvas id="kRadarChart" width="300" ref="kRadarChart" height="250"></canvas>
+                                </div>
+                                <div className="xcontainer" style={{ marginTop: '40px' }}>
                                     <div className="table-title">知识点详情:</div>
                                     <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
                                 </div>
@@ -320,15 +323,18 @@ class Reportdata extends BaseComponent<{
                     }
                     {/*个人题型得分情况*/}
                     < div className="score-report report-sec" >
-                        <div className="r-title">题型分数比重分布</div>
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i> 题型分数比重分布<i className="r-title-badge after"></i></span>
+                        </div>
 
                         <div className="xcontainer">
                             <div id="spcontainer" ></div>
                         </div>
-                        <div className="xcontainer">题型得分分布
-                             <canvas id="SocreRadarChart" width="706" height="706" ref="SocreRadarChart"></canvas>
-                        </div>
                         <div className="xcontainer">
+                            <div className="radar-title">题型得分分布</div>
+                            <canvas id="SocreRadarChart" width="300" height="250" ref="SocreRadarChart"></canvas>
+                        </div>
+                        <div className="xcontainer" style={{ marginTop: '30px' }}>
                             <div className="table-title">题型详情:</div>
                             <Xtable p={dataAll.question_type_info.personal} o={dataAll.question_type_info.overall} title='题型'></Xtable>
                         </div>
@@ -338,62 +344,67 @@ class Reportdata extends BaseComponent<{
                     {/*个人小分分析*/}
                     {
                         dataAll.question_detail_info.length !== 0 ?
-                            <div>
-                                <div className="rtitle">个人小分分析</div>
-                                <table className="rd-table">
-                                    <thead className="rd-table-thead">
-                                        <tr className="rd-table-th">
-                                            <td className="rd-table-td">题号</td>
-                                            <td className="rd-table-td">分值</td>
-                                            <td className="rd-table-td">你的得分</td>
-                                            <td className="rd-table-td">平均得分</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            (() => {
-                                                let trs = [];
-                                                let question = dataAll.question_detail_info;
-                                                for (var i = 0; i < question.length; i++) {
-                                                    trs.push(
-                                                        <tr className="rd-table-tr" key={i}>
-                                                            <td className="rd-table-td">{question[i].index}</td>
-                                                            <td className="rd-table-td">{question[i].value}</td>
-                                                            <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
-                                                            <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
-                                                        </tr>
-                                                    )
-                                                }
-                                                return trs;
-                                            })()
-                                        }
-                                    </tbody>
-                                </table>
+                            <div className="personal-report">
+                                <div className="r-title">
+                                    <span className="r-title-sub"> <i className="r-title-badge before"></i>个人小分分析<i className="r-title-badge after"></i></span>
+                                </div>
+                                <div className="table-wrap">
+                                    <table className="rd-table">
+                                        <thead className="rd-table-thead">
+                                            <tr className="rd-table-th">
+                                                <td className="rd-table-td">题号</td>
+                                                <td className="rd-table-td">分值</td>
+                                                <td className="rd-table-td">你的得分</td>
+                                                <td className="rd-table-td">平均得分</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                (() => {
+                                                    let trs = [];
+                                                    let question = dataAll.question_detail_info;
+                                                    for (var i = 0; i < question.length; i++) {
+                                                        trs.push(
+                                                            <tr className="rd-table-tr" key={i}>
+                                                                <td className="rd-table-td">{question[i].index}</td>
+                                                                <td className="rd-table-td">{question[i].value}</td>
+                                                                <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
+                                                                <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
+                                                            </tr>
+                                                        )
+                                                    }
+                                                    return trs;
+                                                })()
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/*教师点评*/}
+                                < div className="t-comment" >
+                                    <div className="t-title">教师点评</div>
+                                    <div className="comment-wrapper">
+                                        <div className="teacher">
+                                            <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
+                                        </div>
+                                        <div className="comment">
+                                            <i className="quot">
+                                                <img src={`${__IMAGE_STATIC_PATH__}/quot@3x.png`} />
+                                            </i>
+                                            <i className="quot2">
+                                                <img src={`${__IMAGE_STATIC_PATH__}/quot2@3x.png`} />
+                                            </i>
+                                            <div>
+                                                <div>{dataAll.teacher_review.review_overall}</div>
+                                                <div>{dataAll.teacher_review.review_knowledge}</div>
+                                                <div>{dataAll.teacher_review.review_question_type}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div >
+
                             </div> : ''
                     }
-                    {/*教师点评*/}
-                    < div className="t-comment" >
-                        <div className="t-title">教师点评</div>
-                        <div className="comment-wrapper">
-                            <div className="teacher">
-                                <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
-                                <div className="teacher-name">{dataAll.teacher_review.teacher_name}</div>
-                            </div>
-                            <div className="comment">
-                                <i className="quot">
-                                    <img src={`${__IMAGE_STATIC_PATH__}/quot.png`} />
-                                </i>
-                                <i className="quot2">
-                                    <img src={`${__IMAGE_STATIC_PATH__}/quot2.png`} />
-                                </i>
-                                <div>
-                                    <div>{dataAll.teacher_review.review_overall}</div>
-                                    <div>{dataAll.teacher_review.review_knowledge}</div>
-                                    <div>{dataAll.teacher_review.review_question_type}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div >
                     {/*ad*/}
                     <div className="ad">
                         <a href={dataAll.ad.redirect_url}>
