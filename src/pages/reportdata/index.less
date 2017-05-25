@@ -1,4 +1,3 @@
-
 .report-container{
     padding: 10px 10px 0;
     color: #666;
@@ -26,8 +25,8 @@
   
 }
 .cup{
- position: absolute;
-    top: 43px;
+    position: absolute;
+    top: 25px;
     right: 16px;
     width: 25%;
     background: #d4eeff;
@@ -52,7 +51,7 @@
 .title{
   width: 25%;
   text-align: center;
-  margin-right: 5px;
+  margin-right: 8px;
   border-radius: 2px;
 }
 .detail{
@@ -63,7 +62,7 @@
   white-space: nowrap;
 }
 .demo-wrap{
-  margin:15px 10px 10px 10px;
+  margin:15px 10px 23px 23px;
   font-size: 12px;
   #U > .clearfix();
 }
@@ -87,8 +86,7 @@
   border-bottom: 2px solid #fff;
   background: #fff;
   padding: 16px;
-  font-size: 14px;
-  font-size: 14px;
+  font-size: 12px;
 }
 .overall-report{
   margin-bottom: 30px;
@@ -110,7 +108,11 @@
   margin-right: 4px;
 }
 .xcontainer{
-  margin-bottom: 20px;
+  padding: 16px 16px 0 16px;
+  overflow: hidden;
+}
+.rcontainer{
+  margin-top: 70px;
 }
 .des-title{
   height:24px;
@@ -118,9 +120,8 @@
   border-bottom: 2px solid #fff;
   text-align: left;
   color: #000;
-  font-weight: 400;
- 
-}
+  font-weight: 500;
+ }
 .des-detail{
   line-height: 26px;
   text-align: left;
@@ -129,10 +130,10 @@
     background-image:url("@{img-path}/rectangle3@3x.png");
     background-size: cover;
     color: #000;
+    font-size: 12px;
+    font-weight: 500;
     height: 35px;
     line-height: 35px;
-    font-weight: bold;
-    font-size: 16px;
     & .r-title-sub{
       display: inline-block;
       vertical-align: middle;
@@ -143,12 +144,12 @@
         background-image: url("@{img-path}/badge@3x.png");
         background-size: 100%;
         position: relative;
-        top: 5px;
+        top: 6px;
         &.before{
         left: -9px;
         }
         &.after{
-        left:7px;
+        left:9px;
         }
       }
     }
@@ -165,7 +166,7 @@
 		font-size: 14px;
     font-weight: normal;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 16px;
 	}
   .rcontainer{
     #U > .clearfix();
@@ -173,7 +174,7 @@
   	.rank-container{
 		padding: 20px 0;
     min-height: 140px;
-    margin: 18px 0 25px 0;
+    margin: 70px 0 25px 0;
     & h3{
       margin-bottom: 62px;
     }
@@ -239,7 +240,7 @@
 
  .summarize{
     background: #fff;
-    padding: 25px 0px 20px 16px;
+    padding: 40px 0px 40px 16px;
     text-align: left;
     position: relative;
   }
@@ -250,47 +251,51 @@
   justify-content:center;
   -ms-flex-align: center;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  background-image: url("@{img-path}/rectangle@3x.png");
+  background-size: 100%;
+  margin: 15px 16px 40px;
 }
 .teacher{
     -ms-flex:1;
     flex:1;
     box-sizing:border-box;
-    padding-left: 15px;
-    border-right: 2px solid #fff;
-    background: #fff;
-  }
+    padding-left: 6px;
+ }
 .comment{
     flex:3;
     box-sizing:border-box;
     min-height: 100px;
     text-align: left;
-    margin:6px 20px 3px;
+    margin-top:6px;
     padding: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f7fafc;
     position: relative;
   }
 .sm-title{
-    font-weight: bold;
-    color: #2db7f5;
+    font-weight: 500;
+    color:#479cff;
 }
 .sm-item{
     padding: 3px;
 }
 .t-comment{
   background: #fff;
+  
 }
 .t-title{
-    background: #c9e5f5;
-    color: #000;
-    height: 35px;
-    line-height: 35px;
-    margin: 10px 0;
-    font-weight: bold;
-    text-align: center;
+  text-align: left;
+  padding-left: 16px;
+  line-height: 42px;
+    // background: #c9e5f5;
+    // color: #000;
+    // height: 35px;
+    // line-height: 35px;
+    // margin: 10px 0;
+    // font-weight: bold;
+    // text-align: center;
 }
 
 .teacher-avatar{
@@ -305,7 +310,7 @@ img{
     display: inline-block;
     width: 15px;
     height: 15px;
-    top: -5px;
+    top: -15px;
     left: -15px;
 }
 .quot2{
@@ -313,15 +318,15 @@ img{
     display: inline-block;
     width: 15px;
     height: 15px;
-    right: -2px;
-    bottom: -2px;
+    right: 9px;
+    bottom: -15px;
 }
 .table-title{
   text-align: left;
-  padding: 0 20px;
+  padding: 0 6px;
   color: #000;
   font-weight: 400;
-  margin:20px 0;
+   margin-bottom: 10px;
 }
 
 .rtitle{
@@ -366,14 +371,14 @@ img{
   .rd-table-thead{
   tr{
     td{
-      background-color: #bad2e2 ;
+      background-color: #bad2e2 !important;
     }
   }
     
   }
 .positive{
   font-weight: bold;
-  color: rgb(34, 139, 34);
+  color: #f58d23;
 }
 .sanjiaoxin-out{
   position: absolute;
@@ -414,7 +419,7 @@ img{
     box-sizing: border-box;
     color: #fff;
     font-size: 14px;
-    box-shadow: -1px 4px 9px rgba(171,171,171,0.9);
+    box-shadow: -1px 2px 9px rgba(171,171,171,0.9);
     .red{
     color:#d0021b;
     }
@@ -433,7 +438,8 @@ img{
     background-image:url("@{img-path}/av.png");
   }
   &.round-blue{
-    right:45px;
+    right:auto;
+    left: -20px;
    background-image:url("@{img-path}/good.png");
   }
 }
@@ -441,10 +447,37 @@ img{
 
 .knowledge-report{
   background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px #ccc;
+  margin-bottom: 30px;
 }
 .score-report{
-background-color: #fff;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px #ccc;
+  margin-bottom: 30px;
 }
 .personal-report{
-background-color: #fff;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px #ccc;
+  margin-bottom: 30px;
+}
+.table-wrap{
+  padding:20px 16px;
+}
+.radar-title{
+  margin-bottom: 20px;
+  font-size: 12px;
+  color:#333;
+}
+
+@media screen and (max-width: 320px) {
+  .xcontainer{
+  padding:16px  6px 0 6px;
+  overflow: hidden;
+  }
 }

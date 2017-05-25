@@ -36,28 +36,33 @@ class Xtable extends React.Component<{
         }
 
         return (
-            <table className="rd-table">
-                <thead className="rd-table-thead">
-                    <tr className="rd-table-th">
-                        <td className="rd-table-td">{this.props.title}</td>
-                        <td className="rd-table-td">得分</td>
-                        <td className="rd-table-td">平均得分</td>
-                        <td className="rd-table-td">分差</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        temArr.map((item: any, index: number) => (
-                            <tr className="rd-table-tr" key={index}>
-                                <td className="rd-table-td">{item.tyid}</td>
-                                <td className="rd-table-td">{item.score_rate}</td>
-                                <td className="rd-table-td">{item.mean_sr}</td>
-                                <td className={`${item.score_vary_positive ? "positive" : " "}  rd-table-td`}>{item.score_vary}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
+            <div className="table-warp">
+                <table className="rd-table">
+                    <thead className="rd-table-thead">
+                        <tr className="rd-table-th">
+                            <td className="rd-table-td">{this.props.title}</td>
+                            <td className="rd-table-td">得分</td>
+                            <td className="rd-table-td">平均得分</td>
+                            <td className="rd-table-td">分差</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            temArr.map((item: any, index: number) => (
+                                <tr className="rd-table-tr" key={index}>
+                                    <td className="rd-table-td">{item.tyid}</td>
+                                    <td className="rd-table-td">{item.score_rate}</td>
+                                    <td className="rd-table-td">{item.mean_sr}</td>
+                                    <td className={`${item.score_vary_positive ? "positive" : " "}  rd-table-td`}>{item.score_vary}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
         )
     }
 

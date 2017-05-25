@@ -154,7 +154,7 @@ class Reportdata extends BaseComponent<{
                         style: {
                             fontWeight: 'bold',
                             color: '#666',
-                            fontSize: '12px'
+                            fontSize: '10px'
                         }
                     },
                     startAngle: -90,
@@ -172,7 +172,11 @@ class Reportdata extends BaseComponent<{
                 enabled: false
             },
             title: {
-                text: title
+                text: title,
+                style: {
+                    color: '#333',
+                    fontSize: '12px'
+                }
             },
             series: [{
                 type: 'pie',
@@ -191,9 +195,7 @@ class Reportdata extends BaseComponent<{
                 pointFormat: '<span style="color:{point.color}">\u25CF</span> <span style="color:{point.color}">{point.name}:</span> <b style="color:white">{point.y}</b><br/>',
             }
         })
-
         // 绘制个人能力分布图
-
         let myRadarChart = new Chart(ctx, {
             type: 'radar',
             data: {
@@ -304,13 +306,14 @@ class Reportdata extends BaseComponent<{
                                     <span className="r-title-sub"> <i className="r-title-badge before"></i>个人知识点掌握情况<i className="r-title-badge after"></i></span>
                                 </div>
 
-                                <div className="xcontainer" style={{ marginBottom: '20px', paddingTop: '40px;' }}>
+                                <div className="xcontainer">
                                     <div id="kpcontainer" ></div>
                                 </div>
-                                <div className="xcontainer">个人能力分布
-                             <canvas id="kRadarChart" width="300" ref="kRadarChart" height="300"></canvas>
-                                </div>
                                 <div className="xcontainer">
+                                    <div className="radar-title">个人能力分布</div>
+                                    <canvas id="kRadarChart" width="300" ref="kRadarChart" height="250"></canvas>
+                                </div>
+                                <div className="xcontainer" style={{ marginTop: '40px' }}>
                                     <div className="table-title">知识点详情:</div>
                                     <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
                                 </div>
@@ -320,15 +323,18 @@ class Reportdata extends BaseComponent<{
                     }
                     {/*个人题型得分情况*/}
                     < div className="score-report report-sec" >
-                        <div className="r-title">题型分数比重分布</div>
+                        <div className="r-title">
+                            <span className="r-title-sub"> <i className="r-title-badge before"></i> 题型分数比重分布<i className="r-title-badge after"></i></span>
+                        </div>
 
                         <div className="xcontainer">
                             <div id="spcontainer" ></div>
                         </div>
-                        <div className="xcontainer">题型得分分布
-                             <canvas id="SocreRadarChart" width="706" height="706" ref="SocreRadarChart"></canvas>
-                        </div>
                         <div className="xcontainer">
+                            <div className="radar-title">题型得分分布</div>
+                            <canvas id="SocreRadarChart" width="300" height="250" ref="SocreRadarChart"></canvas>
+                        </div>
+                        <div className="xcontainer" style={{ marginTop: '30px' }}>
                             <div className="table-title">题型详情:</div>
                             <Xtable p={dataAll.question_type_info.personal} o={dataAll.question_type_info.overall} title='题型'></Xtable>
                         </div>
@@ -339,61 +345,66 @@ class Reportdata extends BaseComponent<{
                     {
                         dataAll.question_detail_info.length !== 0 ?
                             <div className="personal-report">
-                                <div className="rtitle">个人小分分析</div>
-                                <table className="rd-table">
-                                    <thead className="rd-table-thead">
-                                        <tr className="rd-table-th">
-                                            <td className="rd-table-td">题号</td>
-                                            <td className="rd-table-td">分值</td>
-                                            <td className="rd-table-td">你的得分</td>
-                                            <td className="rd-table-td">平均得分</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            (() => {
-                                                let trs = [];
-                                                let question = dataAll.question_detail_info;
-                                                for (var i = 0; i < question.length; i++) {
-                                                    trs.push(
-                                                        <tr className="rd-table-tr" key={i}>
-                                                            <td className="rd-table-td">{question[i].index}</td>
-                                                            <td className="rd-table-td">{question[i].value}</td>
-                                                            <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
-                                                            <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
-                                                        </tr>
-                                                    )
-                                                }
-                                                return trs;
-                                            })()
-                                        }
-                                    </tbody>
-                                </table>
+                                <div className="r-title">
+                                    <span className="r-title-sub"> <i className="r-title-badge before"></i>个人小分分析<i className="r-title-badge after"></i></span>
+                                </div>
+                                <div className="table-wrap">
+                                    <table className="rd-table">
+                                        <thead className="rd-table-thead">
+                                            <tr className="rd-table-th">
+                                                <td className="rd-table-td">题号</td>
+                                                <td className="rd-table-td">分值</td>
+                                                <td className="rd-table-td">你的得分</td>
+                                                <td className="rd-table-td">平均得分</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                (() => {
+                                                    let trs = [];
+                                                    let question = dataAll.question_detail_info;
+                                                    for (var i = 0; i < question.length; i++) {
+                                                        trs.push(
+                                                            <tr className="rd-table-tr" key={i}>
+                                                                <td className="rd-table-td">{question[i].index}</td>
+                                                                <td className="rd-table-td">{question[i].value}</td>
+                                                                <td className={`${(question[i].user_score > question[i].mean_score) ? 'positive' : ' '} rd-table-td`}>{question[i].user_score}</td>
+                                                                <td className="rd-table-td">{question[i].mean_score.toFixed(2)}</td>
+                                                            </tr>
+                                                        )
+                                                    }
+                                                    return trs;
+                                                })()
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/*教师点评*/}
+                                < div className="t-comment" >
+                                    <div className="t-title">教师点评</div>
+                                    <div className="comment-wrapper">
+                                        <div className="teacher">
+                                            <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
+                                        </div>
+                                        <div className="comment">
+                                            <i className="quot">
+                                                <img src={`${__IMAGE_STATIC_PATH__}/quot@3x.png`} />
+                                            </i>
+                                            <i className="quot2">
+                                                <img src={`${__IMAGE_STATIC_PATH__}/quot2@3x.png`} />
+                                            </i>
+                                            <div>
+                                                <div>{dataAll.teacher_review.review_overall}</div>
+                                                <div>{dataAll.teacher_review.review_knowledge}</div>
+                                                <div>{dataAll.teacher_review.review_question_type}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div >
+
                             </div> : ''
                     }
-                    {/*教师点评*/}
-                    < div className="t-comment" >
-                        <div className="t-title">教师点评</div>
-                        <div className="comment-wrapper">
-                            <div className="teacher">
-                                <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
-                                <div className="teacher-name">{dataAll.teacher_review.teacher_name}</div>
-                            </div>
-                            <div className="comment">
-                                <i className="quot">
-                                    <img src={`${__IMAGE_STATIC_PATH__}/quot.png`} />
-                                </i>
-                                <i className="quot2">
-                                    <img src={`${__IMAGE_STATIC_PATH__}/quot2.png`} />
-                                </i>
-                                <div>
-                                    <div>{dataAll.teacher_review.review_overall}</div>
-                                    <div>{dataAll.teacher_review.review_knowledge}</div>
-                                    <div>{dataAll.teacher_review.review_question_type}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div >
                     {/*ad*/}
                     <div className="ad">
                         <a href={dataAll.ad.redirect_url}>
