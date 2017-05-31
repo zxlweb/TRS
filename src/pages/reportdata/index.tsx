@@ -232,6 +232,14 @@ class Reportdata extends BaseComponent<{
         const { dispatch, dataAll } = this.props;
         let exam_date = moment(dataAll.basic_info.exam_date);
         let fullYear = exam_date.format('YYYY-MM-DD');
+        let cupType = '';
+        console.log(dataAll);
+        let { user_prize } = dataAll.basic_info;
+        switch (user_prize) {
+            case '一等奖': cupType = 'gold-cup@2x.png'; break;
+            case '二等奖': cupType = 'silver-cup@2x.png'; break;
+            default: cupType = 'copper-cup@2x'; break;
+        }
         return (
             <div id="app-report">
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
@@ -260,7 +268,7 @@ class Reportdata extends BaseComponent<{
                             <div className="detail">{dataAll.basic_info.user_prize}</div>
                         </div>
                         <div className="cup">
-                            <img src={`${__IMAGE_STATIC_PATH__}/gold-cup@2x.png`} alt="" />
+                            <img src={`${__IMAGE_STATIC_PATH__}/${cupType}`} alt="" />
                         </div>
                     </div>
                     {/*试卷说明*/}
