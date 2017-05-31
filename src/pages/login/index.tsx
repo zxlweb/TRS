@@ -14,9 +14,10 @@ import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
 import APP from '../../a-reducer/app';
 import { getLogin } from '../../a-action/login';
-import { getStudentSerial, init as uisInit } from 'uis-agent';
-import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
+import { getStudentSerial, expressInit, clientInit } from 'uis-agent';
+import { WECHAT_AUTH_PLATFORM_ID, TEST_UIS_AGENT_OPTIONS } from '../../const';
 import * as querystring from 'query-string';
+import { envDetect } from 'razy/dist/lib/env-detect';
 
 const style = _importLess('./index', __dirname);
 class Login extends BaseComponent<{
@@ -25,16 +26,17 @@ class Login extends BaseComponent<{
         exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        // uisInit({
-        //     get: function (key: string) { return JSON.parse(req.cookies[key] || '{}') },
-        //     set: function (key: string, value: any, options: any) { res.cookie(key, JSON.stringify(value), options) },
-        //     remove: function (key: string) { }
-        // }, `http://${__PAGE_SERVER_HOST__}${req.url}`, req.headers['user-agent'], function (url: string) { res.redirect(url) }, { wechat: WECHAT_AUTH_REDIRECT_URL });
-        
-        // const force = req.query ? req.query.force : false;
-        // const serial = await getStudentSerial(force);
-        // res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
-        // throw new Error('redirected');
+        expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : undefined);
+        try {
+            const serial = await getStudentSerial();
+            res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
+        } catch (error) {
+            if (error.message !== 'redirected') {
+                res.end(error.message);
+            }
+        }
+
+        throw new Error('redirected');
     }
     setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] { }

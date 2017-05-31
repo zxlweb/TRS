@@ -5,6 +5,6 @@
         "conf"
     ],
     "env": {
-        "NODE_ENV": ""
+        "NODE_ENV": "dev"
     }
 }

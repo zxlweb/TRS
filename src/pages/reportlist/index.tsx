@@ -15,8 +15,6 @@ import REQUEST from '../../const/request';
 import Header from '../header';
 import { getLogin } from '../../a-action/login';
 import * as moment from 'moment';
-import {setLoginStudentID, updateStudent, init as initUIS} from 'uis-agent';
-import { WECHAT_AUTH_REDIRECT_URL } from '../../const';
 
 const style = _importLess('./index', __dirname);
 class Reportlist extends BaseComponent<{
@@ -24,8 +22,8 @@ class Reportlist extends BaseComponent<{
 }, {
 
     }>{
-    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {}
-    setUpPage(manager: HTMLManager) {  }
+    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
+    setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] {
         return [
             getLogin(props.params.id)
@@ -38,20 +36,7 @@ class Reportlist extends BaseComponent<{
         const { list } = this.props;
     }
     handleReBind() {
-        // initUIS({
-        //     get: Storage.getJSON,
-        //     set: Storage.set,
-        //     remove: Storage.remove
-        // }, location.href, navigator.userAgent, function (url: string) {  }, { wechat: WECHAT_AUTH_REDIRECT_URL });
-
-        // setLoginStudentID(null);
-        // updateStudent({id: 0});
-        // const UIS = _storage.getJSON('UIS');
-        // UIS.user = UIS.user || {};
-        // UIS.user.login_student = null;
-        // _storage.set('UIS', UIS, {domain: '.njpeiyou.com'});
-
-        location.href = `http://uisc.njpeiyou.com/bind?redirect=${encodeURIComponent(`http://${__PAGE_SERVER_HOST__}/?force=true`)}`;
+        location.href = `http://uisc.njpeiyou.com/`;
     }
     render() {
 
@@ -64,8 +49,8 @@ class Reportlist extends BaseComponent<{
                 <div className="list-container">
                     {
                         list.length === 0 ?
-                        <div className="usr-info">很抱歉，没有您的报告 <a onClick={this.handleReBind.bind(this)}>重新绑定</a></div> :
-                        <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
+                            <div className="usr-info">很抱歉，没有您的报告 <a onClick={this.handleReBind.bind(this)}>点此重新绑定</a></div> :
+                            <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
                     }
                     <div id="report-list">
                         <h3 className="report-title">报告列表</h3>
