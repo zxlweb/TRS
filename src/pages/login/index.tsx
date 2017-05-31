@@ -26,7 +26,8 @@ class Login extends BaseComponent<{
         exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : undefined);
+        expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : { internal: true });
+
         try {
             const serial = await getStudentSerial();
             res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
