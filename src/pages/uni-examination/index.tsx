@@ -214,7 +214,7 @@ class UniExam extends BaseComponent<{
                             <div id="container"></div>
                         </div>
                         <div className="rcontainer">
-                            <div className="score-des">
+                            {/*<div className="score-des">
                                 <div className="average-score score-des-detail"><div className="scroe-title">本次考试平均分</div><div className="score-sub">{dataUniExam.overall_info.mean_score}</div></div>
                                 <div className="highest-score score-des-detail"><div className="scroe-title">本次考试最高分</div><div className="score-sub">{dataUniExam.overall_info.highest_score}</div></div>
                                 <RankChart title="总体排名分布" msg={dataUniExam.overall_info}> </RankChart>
@@ -223,7 +223,7 @@ class UniExam extends BaseComponent<{
                                         return <RankChart msg={item} title={item.title} key={index}></RankChart>
                                     })
                                 }
-                            </div>
+                            </div>*/}
                         </div >
                     </div >
 
