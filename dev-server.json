@@ -1,7 +1,9 @@
 {
     "name": "trs",
     "script": "dist/index.js",
-    "watch": ["conf"],
+    "watch": [
+        "conf"
+    ],
     "env": {
         "NODE_ENV": ""
     }

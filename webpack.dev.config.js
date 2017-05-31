@@ -19,6 +19,7 @@ module.exports = {
         'react': 'React',
         'immutable': 'Immutable',
         'react-dom': 'ReactDOM',
+        'request': 'request' // for reducing bundle size
     },
     module: {
         loaders: [
@@ -38,8 +39,8 @@ module.exports = {
             }
         ]
     },
-    postcss: function() {
-        return [autoprefixer, cssnano({zindex: false, reduceIdents: false})];
+    postcss: function () {
+        return [autoprefixer, cssnano({ zindex: false, reduceIdents: false })];
     },
     serverLessLoader: {
         loader: '_importLess'
@@ -49,6 +50,7 @@ module.exports = {
     },
     plugins: [
         // new webpack.optimize.DedupePlugin(),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // for reducing bundle size
         new webpack.DefinePlugin({
             __WEBPACK_DEV__: true
         }),
