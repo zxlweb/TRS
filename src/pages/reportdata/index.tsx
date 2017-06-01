@@ -15,7 +15,6 @@ import REQUEST from '../../const/request';
 import Xtable from './xtable';
 import Summarize from './summarize';
 import RankChart from './rankchart';
-import Header from '../header';
 import { getData } from '../../a-action/reportdata';
 import * as moment from 'moment';
 const style = _importLess('./index', __dirname);

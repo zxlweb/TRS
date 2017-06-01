@@ -12,7 +12,6 @@ import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
 import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
-import Header from '../header';
 import { getLogin } from '../../a-action/login';
 import * as moment from 'moment';
 
@@ -45,7 +44,6 @@ class Reportlist extends BaseComponent<{
         return (
             <div>
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
-                <Header></Header>
                 <div className="list-container">
                     {
                         list.length === 0 ?
