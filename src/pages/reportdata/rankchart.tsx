@@ -32,7 +32,7 @@ class RankChart extends React.Component<{
                 // 可以放在中间
                 pos = (disRight - width);
             } else {
-                (rcYourWidth / rankChartWidth >= 0.9) ? pos = -10 : 0;
+                ((rcYourWidth / rankChartWidth) >= 0.9) ? pos = -10 : pos = 0;
             }
             rcYourContent.style.left = '';
             rcYourContent.style.right = pos + 'px';
@@ -45,7 +45,7 @@ class RankChart extends React.Component<{
                 pos = (disLeft - width);
 
             } else {
-                (rcYourWidth / rankChartWidth <= 0.1) ? pos = -12 : 0;
+                ((rcYourWidth / rankChartWidth) <= 0.1) ? pos = -12 : pos = 0;
             }
             rcYourContent.style.right = '';
             rcYourContent.style.left = pos + 'px';
@@ -58,6 +58,7 @@ class RankChart extends React.Component<{
             if (_msg.user_percent) {
                 let pct = _msg.user_percent * 1
                 return (pct * 100).toFixed(2) + '%'
+
             }
         };
         let goodrank = function () {
