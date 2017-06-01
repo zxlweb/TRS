@@ -11,7 +11,6 @@ import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
 import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
-import Header from '../header';
 import RankChart from '../reportdata/rankchart';
 import Summarize from '../reportdata/summarize';
 import Xtable from '../reportdata/xtable';
@@ -183,7 +182,6 @@ class UniExam extends BaseComponent<{
         return (
             <div>
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
-                <Header></Header>
                 <div className="UniExam-container container" >
                     {/*basic_info*/}
                     <div className="basic-info-sec">
