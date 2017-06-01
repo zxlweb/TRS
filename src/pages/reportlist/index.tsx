@@ -50,6 +50,7 @@ class Reportlist extends BaseComponent<{
                             <div className="usr-info">很抱歉，没有您的报告 <a onClick={this.handleReBind.bind(this)}>点此重新绑定</a></div> :
                             <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
                     }
+                    <a href="http://uisc.njpeiyou.com" className="udash-entry">统一后台管理系统</a>
                     <div id="report-list">
                         <h3 className="report-title">报告列表</h3>
                         {
