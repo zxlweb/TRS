@@ -258,10 +258,10 @@ class Reportdata extends BaseComponent<{
                             <div className="title" style={{ backgroundColor: '#51aae4', color: '#fff' }}>个人分数</div>
                             <div className="detail">{`${dataAll.basic_info.user_total_score}/${dataAll.basic_info.exam_total_score}`}</div>
                         </div>
-                        <div className="info-sec">
+                        {/*<div className="info-sec">
                             <div className="title" style={{ backgroundColor: '#2270a7', color: '#fff' }}>个人排名</div>
                             <div className="detail">{dataAll.basic_info.user_rank}</div>
-                        </div>
+                        </div>*/}
                         <div className="info-sec" style={{ marginBottom: '0px' }}>
                             <div className="title" style={{ backgroundColor: '#074977', color: '#fff' }}>个人奖项</div>
                             <div className="detail">{dataAll.basic_info.user_prize}</div>
