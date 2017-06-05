@@ -50,7 +50,7 @@ class Reportlist extends BaseComponent<{
                             <div className="usr-info">很抱歉，没有您的报告 <a onClick={this.handleReBind.bind(this)}>点此重新绑定</a></div> :
                             <div className="usr-info">你好，{list[0].user_name}！欢迎来到TRS！</div>
                     }
-                    <a href="http://uisc.njpeiyou.com" className="udash-entry">统一后台管理系统</a>
+                    <a href="http://uisc.njpeiyou.com" className="udash-entry">账号中心</a>
                     <div id="report-list">
                         <h3 className="report-title">报告列表</h3>
                         {
@@ -86,10 +86,11 @@ class Reportlist extends BaseComponent<{
                             })()
 
                         }
+                        <div className="share-info">
+                            <img src={`${__IMAGE_STATIC_PATH__}/wechatshare.png`} />
+                        </div>
                     </div>
-                    <div className="share-info">
-                        <img src={`${__IMAGE_STATIC_PATH__}/wechatshare.png`} />
-                    </div>
+
                 </div>
                 <footer>Copyright © 2017 南京学而思市场部</footer>
             </div>
