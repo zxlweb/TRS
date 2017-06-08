@@ -235,8 +235,10 @@ class Reportdata extends BaseComponent<{
 
         let { user_prize } = dataAll.basic_info;
         switch (user_prize) {
-            case '一等奖' || 'S': cupType = 'gold-cup@2x.png'; break;
-            case '二等奖' || 'A+': cupType = 'silver-cup@2x.png'; break;
+            case '一等奖': case 'S':
+                cupType = 'gold-cup@2x.png'; break;
+            case '二等奖': case 'A+':
+                cupType = 'silver-cup@2x.png'; break;
             default: cupType = 'copper-cup@2x';
         }
         return (
