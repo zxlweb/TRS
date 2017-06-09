@@ -17,7 +17,12 @@ class Xtable extends React.Component<{
         let title = '';
         if (this.props.p.length) {
             this.props.p.forEach((ele: any, index: any) => {
-                let idx = findIndex(this.props.o, (item: any) => item.tyid == ele.tyid);
+                let idx;
+                if (ele.tyid) {
+                    idx = findIndex(this.props.o, (item: any) => item.tyid == ele.tyid);
+                } else if (ele.kpid) {
+                    idx = findIndex(this.props.o, (item: any) => item.kpid == ele.kpid);
+                }
                 let value = this.props.o[idx].total_value;
                 let myScore: any = (ele.score_rate * value).toFixed(0);
                 let meanScore: any = (this.props.o[idx].mean_sr * value).toFixed(2);

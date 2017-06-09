@@ -131,7 +131,7 @@ class Reportdata extends BaseComponent<{
         let radarLable: any = [];
         let radarValuemy: any = [];
         let radarValueall: any = [];
-        console.log(overall);
+        console.log(overall, personal);
         overall.forEach((ele: any, index: any) => {
             temArr = []
             temArr.push(ele.kpid || ele.tyid)
