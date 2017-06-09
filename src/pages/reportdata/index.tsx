@@ -17,6 +17,7 @@ import Summarize from './summarize';
 import RankChart from './rankchart';
 import { getData } from '../../a-action/reportdata';
 import * as moment from 'moment';
+import findIndex = require('lodash.findindex');
 const style = _importLess('./index', __dirname);
 class Reportdata extends BaseComponent<{
     dataAll: any
@@ -229,14 +230,28 @@ class Reportdata extends BaseComponent<{
     render() {
 
         const { dispatch, dataAll } = this.props;
+
+        let { exam_title } = dataAll.basic_info;
+        console.log(exam_title);
+        let arr = ['一年级', '二年级', '三年级', '四年级', '五年级'];
+        let imgSrc = '';
+        let idx = findIndex(arr, (i) => { if (exam_title.indexOf(i) != -1) { return true } });
+        if (idx && exam_title.indexOf('英语') != -1) {
+            imgSrc = `${__IMAGE_STATIC_PATH__}/lele.png`
+        } else {
+            imgSrc = dataAll.teacher_review.teacher_head_icon
+        }
+        console.log(imgSrc);
         let exam_date = moment(dataAll.basic_info.exam_date);
         let fullYear = exam_date.format('YYYY-MM-DD');
         let cupType = '';
 
         let { user_prize } = dataAll.basic_info;
         switch (user_prize) {
-            case '一等奖': cupType = 'gold-cup@2x.png'; break;
-            case '二等奖': cupType = 'silver-cup@2x.png'; break;
+            case '一等奖': case 'S':
+                cupType = 'gold-cup@2x.png'; break;
+            case '二等奖': case 'A+':
+                cupType = 'silver-cup@2x.png'; break;
             default: cupType = 'copper-cup@2x';
         }
         return (
@@ -393,7 +408,7 @@ class Reportdata extends BaseComponent<{
                                     <div className="t-title">教师点评</div>
                                     <div className="comment-wrapper">
                                         <div className="teacher">
-                                            <div className="teacher-avatar"><img src={dataAll.teacher_review.teacher_head_icon} alt="" /> </div>
+                                            <div className="teacher-avatar"><img src={imgSrc} alt="" /> </div>
                                         </div>
                                         <div className="comment">
                                             <i className="quot">

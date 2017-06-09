@@ -38,9 +38,12 @@ class Reportlist extends BaseComponent<{
         location.href = `http://uisc.njpeiyou.com/`;
     }
     render() {
-
         const { list } = this.props;
-
+        list.sort((a: any, b: any) => {
+            let aDate = Number(a.exam_date.split(' ')[0].split('-').join(''));
+            let bDate = Number(b.exam_date.split(' ')[0].split('-').join(''));
+            return bDate - aDate
+        })
         return (
             <div>
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
