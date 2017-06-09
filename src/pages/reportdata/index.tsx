@@ -131,6 +131,7 @@ class Reportdata extends BaseComponent<{
         let radarLable: any = [];
         let radarValuemy: any = [];
         let radarValueall: any = [];
+        console.log(overall);
         overall.forEach((ele: any, index: any) => {
             temArr = []
             temArr.push(ele.kpid || ele.tyid)
@@ -232,27 +233,29 @@ class Reportdata extends BaseComponent<{
         const { dispatch, dataAll } = this.props;
 
         let { exam_title } = dataAll.basic_info;
-        console.log(exam_title);
         let arr = ['一年级', '二年级', '三年级', '四年级', '五年级'];
         let imgSrc = '';
-        let idx = findIndex(arr, (i) => { if (exam_title.indexOf(i) != -1) { return true } });
-        if (idx && exam_title.indexOf('英语') != -1) {
+        let idx = findIndex(arr, (i) => exam_title.indexOf(i) != -1);
+        if (idx != -1 && exam_title.indexOf('英语') != -1) {
             imgSrc = `${__IMAGE_STATIC_PATH__}/lele.png`
         } else {
             imgSrc = dataAll.teacher_review.teacher_head_icon
         }
-        console.log(imgSrc);
         let exam_date = moment(dataAll.basic_info.exam_date);
+
         let fullYear = exam_date.format('YYYY-MM-DD');
         let cupType = '';
 
         let { user_prize } = dataAll.basic_info;
+        console.log(user_prize);
         switch (user_prize) {
             case '一等奖': case 'S':
                 cupType = 'gold-cup@2x.png'; break;
             case '二等奖': case 'A+':
                 cupType = 'silver-cup@2x.png'; break;
-            default: cupType = 'copper-cup@2x';
+            case '三等奖': case 'A':
+                cupType = 'copper-cup@2x'; break;
+            default: user_prize = "—"; cupType = 'defaultCup.png';
         }
         return (
             <div id="app-report">
