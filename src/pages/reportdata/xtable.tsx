@@ -5,6 +5,7 @@ import * as Immutable from 'immutable';
 import { browserHistory } from 'react-router';
 import { ROUTE_PATH } from '../../routes';
 import REQUEST from '../../const/request';
+import findIndex = require('lodash.findindex');
 class Xtable extends React.Component<{
     p: any,
     o: any,
@@ -16,9 +17,10 @@ class Xtable extends React.Component<{
         let title = '';
         if (this.props.p.length) {
             this.props.p.forEach((ele: any, index: any) => {
-                let value = this.props.o[index].total_value;
+                let idx = findIndex(this.props.o, (item: any) => item.tyid == ele.tyid);
+                let value = this.props.o[idx].total_value;
                 let myScore: any = (ele.score_rate * value).toFixed(0);
-                let meanScore: any = (this.props.o[index].mean_sr * value).toFixed(2);
+                let meanScore: any = (this.props.o[idx].mean_sr * value).toFixed(2);
                 let obj = {
                     score_rate: myScore,
                     mean_sr: meanScore,
