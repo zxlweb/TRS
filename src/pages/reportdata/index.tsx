@@ -237,7 +237,7 @@ class Reportdata extends BaseComponent<{
         let imgSrc = '';
         let idx = findIndex(arr, (i) => { if (exam_title.indexOf(i) != -1) { return true } });
         if (idx && exam_title.indexOf('英语') != -1) {
-            imgSrc = `${__IMAGE_STATIC_PATH__}/lele.jpeg`
+            imgSrc = `${__IMAGE_STATIC_PATH__}/lele.png`
         } else {
             imgSrc = dataAll.teacher_review.teacher_head_icon
         }
