@@ -56,8 +56,10 @@ class Reportdata extends BaseComponent<{
         var xArr: any = [], yArr: any = [], zArr: any = [], myscore = dataAll.basic_info.user_total_score;
         var deviation = 40;
         xData.score_segments.forEach(function (score: any) {
-            xArr.push(score.start_point + '-' + score.end_point)
-            if ((myscore * 1 <= score.end_point * 1) && (myscore * 1 > score.start_point * 1)) {
+            let start_point = score.start_point.toFixed(2);
+            let end_point = score.end_point.toFixed(2);
+            xArr.push(start_point + '-' + end_point);
+            if (score.end_point == dataAll.basic_info.exam_total_score ? (myscore * 1 <= score.end_point * 1) && (myscore * 1 >= score.start_point * 1) : (myscore * 1 < score.end_point * 1) && (myscore * 1 >= score.start_point * 1)) {
                 yArr.push({ y: score.count, color: '#f6bc5d' })
                 zArr.push({ y: score.count + deviation })
             } else {
@@ -65,7 +67,6 @@ class Reportdata extends BaseComponent<{
                 zArr.push(score.count + deviation)
             }
         })
-
         Highcharts.chart('container', {
             chart: {
                 height: 280,
@@ -118,7 +119,10 @@ class Reportdata extends BaseComponent<{
                     lineWidth: 1.5,
                     tooltip: {
                         valueSuffix: '人',
-                        pointFormat: ' {series.name}: <b>{point.y}</b><br/>'
+                        pointFormatter: function (point: any) {
+                            let y = Number(this.y) - 40;
+                            return `${this.series.name}: <b>${y}</b><br/>`
+                        }
                     }
                 }
             ]
@@ -131,14 +135,14 @@ class Reportdata extends BaseComponent<{
         let radarLable: any = [];
         let radarValuemy: any = [];
         let radarValueall: any = [];
-        console.log(overall, personal);
         overall.forEach((ele: any, index: any) => {
+            let idx = findIndex(personal, (item: any) => item.tag_name == ele.tag_name)
             temArr = []
-            temArr.push(ele.kpid || ele.tyid)
+            temArr.push(ele.tag_name)
             temArr.push(ele.total_value)
             kpData.push(temArr)
-            radarLable.push(ele.kpid || ele.kpid || ele.tyid)
-            radarValueall.push(ele.mean_sr)
+            radarLable.push(ele.tag_name)
+            radarValueall.push(ele.mean_sr / ele.total_value)
             radarValuemy.push(personal[index].score_rate)
         })
         let title;
@@ -224,14 +228,28 @@ class Reportdata extends BaseComponent<{
                         data: radarValuemy
                     }
                 ]
+            },
+
+            options: {
+                scale: {
+                    ticks: {
+                        beginAtZero: true,
+                        max: 1,
+                        min: 0,
+                        stepSize: 0.2
+                    }
+                }
             }
-        })
+
+        }
+
+        )
     }
+
 
     render() {
 
         const { dispatch, dataAll } = this.props;
-
         let { exam_title } = dataAll.basic_info;
         let arr = ['一年级', '二年级', '三年级', '四年级', '五年级'];
         let imgSrc = '';
@@ -242,21 +260,23 @@ class Reportdata extends BaseComponent<{
             imgSrc = dataAll.teacher_review.teacher_head_icon
         }
         let exam_date = moment(dataAll.basic_info.exam_date);
-
         let fullYear = exam_date.format('YYYY-MM-DD');
         let cupType = '';
-
-        let { user_prize } = dataAll.basic_info;
-        console.log(user_prize);
-        switch (user_prize) {
-            case '一等奖': case 'S':
-                cupType = 'gold-cup@2x.png'; break;
-            case '二等奖': case 'A+':
-                cupType = 'silver-cup@2x.png'; break;
-            case '三等奖': case 'A':
-                cupType = 'copper-cup@2x'; break;
-            default: user_prize = "—"; cupType = 'defaultCup.png';
+        let { user_prize, user_prize_idx } = dataAll.basic_info;
+        if (user_prize) {
+            switch (user_prize_idx) {
+                case '一等奖': case 'S':
+                    cupType = 'gold-cup@2x.png'; break;
+                case '二等奖': case 'A+':
+                    cupType = 'silver-cup@2x.png'; break;
+                case '三等奖': case 'A':
+                    cupType = 'copper-cup@2x.png'; break;
+                default: cupType = 'defaultCup.png';
+            }
+        } else {
+            user_prize = "—"; cupType = 'defaultCup.png'
         }
+
         return (
             <div id="app-report">
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
@@ -282,7 +302,7 @@ class Reportdata extends BaseComponent<{
                         </div>*/}
                         <div className="info-sec" style={{ marginBottom: '0px' }}>
                             <div className="title" style={{ backgroundColor: '#074977', color: '#fff' }}>个人奖项</div>
-                            <div className="detail">{dataAll.basic_info.user_prize}</div>
+                            <div className="detail">{user_prize}</div>
                         </div>
                         <div className="cup">
                             <img src={`${__IMAGE_STATIC_PATH__}/${cupType}`} alt="" />
@@ -389,6 +409,9 @@ class Reportdata extends BaseComponent<{
                                                 (() => {
                                                     let trs = [];
                                                     let question = dataAll.question_detail_info;
+                                                    question.sort((a: any, b: any) => {
+                                                        return b.seq_index - a.seq_index
+                                                    })
                                                     for (var i = 0; i < question.length; i++) {
                                                         trs.push(
                                                             <tr className="rd-table-tr" key={i}>
