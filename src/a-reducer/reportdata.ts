@@ -16,7 +16,6 @@ const reportdata = createReducer(Immutable.fromJS({
     dataAll: []
 }), {
         [ACTION_TYPE.GET_DATA]: (state: Immutable.Map<string, any>, action: any) => {
-            console.log(action.payload);
             return state.set('dataAll', Immutable.fromJS(action.payload));
         }
     });

@@ -20,6 +20,10 @@ class Summarize extends React.Component<{
                         (() => {
                             let trs = [], _item = this.props.item;
                             if (_item instanceof Array) {
+
+                                _item.sort((a: any, b: any) => {
+                                    return b.index - a.index
+                                })
                                 for (let i = 0; i < _item.length; i++) {
                                     trs.push(
                                         <div className="sm-item" key={i}>

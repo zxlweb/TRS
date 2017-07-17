@@ -18,31 +18,21 @@ class Xtable extends React.Component<{
         if (this.props.p.length) {
             this.props.p.forEach((ele: any, index: any) => {
                 let idx;
-                if (ele.tyid) {
-                    idx = findIndex(this.props.o, (item: any) => item.tyid == ele.tyid);
-                } else if (ele.kpid) {
-                    idx = findIndex(this.props.o, (item: any) => item.kpid == ele.kpid);
-                }
+                idx = findIndex(this.props.o, (item: any) => item.tag_name == ele.tag_name);
                 let value = this.props.o[idx].total_value;
                 let myScore: any = (ele.score_rate * value).toFixed(0);
-                let meanScore: any = (this.props.o[idx].mean_sr * value).toFixed(2);
+                let meanScore: any = (this.props.o[idx].mean_sr).toFixed(2);
                 let obj = {
                     score_rate: myScore,
                     mean_sr: meanScore,
                     score_vary: (myScore - meanScore) > 0 ? "高" + (myScore - meanScore).toFixed(2) + "分" : "低" + (meanScore - myScore).toFixed(2) + "分",
                     score_vary_positive: (myScore - meanScore) > 0
                 }
-                if (!!ele.tyid) {
-                    Object.assign(obj, { tyid: ele.tyid, });
-                } else {
-                    Object.assign(obj, { tyid: ele.kpid, });
-                }
+                Object.assign(obj, { tag_name: ele.tag_name, index: ele.index });
                 temArr.push(obj);
-            }
 
-            )
+            })
         }
-
         return (
             <div className="table-warp">
                 <table className="rd-table">
@@ -56,9 +46,10 @@ class Xtable extends React.Component<{
                     </thead>
                     <tbody>
                         {
-                            temArr.map((item: any, index: number) => (
+
+                            temArr.sort((a: any, b: any) => { return b.index - a.index }).map((item: any, index: number) => (
                                 <tr className="rd-table-tr" key={index}>
-                                    <td className="rd-table-td">{item.tyid}</td>
+                                    <td className="rd-table-td">{item.tag_name}</td>
                                     <td className="rd-table-td">{item.score_rate}</td>
                                     <td className="rd-table-td">{item.mean_sr}</td>
                                     <td className={`${item.score_vary_positive ? "positive" : " "}  rd-table-td`}>{item.score_vary}</td>
@@ -68,9 +59,6 @@ class Xtable extends React.Component<{
                     </tbody>
                 </table>
             </div>
-
-
-
         )
     }
 

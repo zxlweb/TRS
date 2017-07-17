@@ -20,13 +20,13 @@ startServer({
     routes: ROUTES,
     createStore: finalCreateStore,
     dataFlagResolver: function (obj: any, resolve: Function, reject: Function) {
-        if (obj.result_code === 0) {
-            resolve(obj.content);
+        if (obj.code === 0) {
+            resolve(obj.data);
         } else {
             reject(obj);
         }
     },
     serverInterceptor: app => {
-        
+
     }
 });

@@ -54,7 +54,7 @@ class Login extends BaseComponent<{
     async handelSubmit(e: any) {
         const { dispatch } = this.props;
         try {
-            var response = await _http.post(REQUEST.SUBMIT, { id: this.state.id });
+            var response = await _http.get(`${REQUEST.SUBMIT}?id=${this.state.id}`);
             this.setState({
                 exist: false
             });
