@@ -46,10 +46,11 @@ class Reportdata extends BaseComponent<{
         const Highcharts = require('highcharts');
         this.PaintContainer(dataAll, Highcharts);
         const Chart = require('chart.js');
-        if (dataAll.knowledge_point_info) {
-            this.PaintPieRadarcontainer(dataAll.knowledge_point_info.overall, dataAll.knowledge_point_info.personal, Highcharts, 'kpcontainer', Chart, this.refs.kRadarChart);
-        }
-        this.PaintPieRadarcontainer(dataAll.question_type_info.overall, dataAll.question_type_info.personal, Highcharts, 'spcontainer', Chart, this.refs.SocreRadarChart);
+        let { question_type_info } = this.props.dataAll;
+        question_type_info.map((item: any) => {
+            this.PaintPieRadarcontainer(item.overall, item.personal, Highcharts, item.name, item.uuid, Chart, item.uuid)
+        })
+
     }
     PaintContainer(dataAll: any, Highcharts: any) {
         var xData = dataAll.overall_info;
@@ -129,7 +130,7 @@ class Reportdata extends BaseComponent<{
         });
 
     }
-    PaintPieRadarcontainer(overall: any, personal: any, Highcharts: any, container: string, Chart: any, ctx: any) {
+    PaintPieRadarcontainer(overall: any, personal: any, Highcharts: any, name: string, container: string, Chart: any, ctx: any) {
         let kpData: any = [];
         let temArr: any = [];
         let radarLable: any = [];
@@ -145,12 +146,9 @@ class Reportdata extends BaseComponent<{
             radarValueall.push(ele.mean_sr / ele.total_value)
             radarValuemy.push(personal[index].score_rate)
         })
-        let title;
-        if (Highcharts && container == 'kpcontainer') {
-            title = "知识点分数比重分布";
-        } else if (Highcharts && container == 'spcontainer') {
-            title = "题型分数比重分布";
-        }
+        let title = name;
+
+
         Highcharts.chart(container, {
             plotOptions: {
                 pie: {
@@ -276,6 +274,9 @@ class Reportdata extends BaseComponent<{
         } else {
             user_prize = "—"; cupType = 'defaultCup.png'
         }
+        // 标签类别
+        let { question_type_info } = this.props.dataAll;
+
 
         return (
             <div id="app-report">
@@ -342,52 +343,32 @@ class Reportdata extends BaseComponent<{
                         <Summarize item={dataAll.overall_info.conclusion}></Summarize>
                     </div>
 
-
-                    {/*个人知识点掌握情况*/}
                     {
-                        dataAll.knowledge_point_info ?
-                            <div className="knowledge-report report-sec" >
+                        question_type_info.map((item: any) => {
+                            return (
+                                <div className="report-sec" >
 
-                                <div className="r-title">
-                                    <span className="r-title-sub"> <i className="r-title-badge before"></i>个人知识点掌握情况<i className="r-title-badge after"></i></span>
-                                </div>
+                                    <div className="r-title">
+                                        <span className="r-title-sub"> <i className="r-title-badge before"></i>{item.name}<i className="r-title-badge after"></i></span>
+                                    </div>
 
-                                <div className="xcontainer">
-                                    <div id="kpcontainer" ></div>
-                                </div>
-                                <div className="xcontainer">
-                                    <div className="radar-title">个人能力分布</div>
-                                    <canvas id="kRadarChart" width="300" ref="kRadarChart" height="250"></canvas>
-                                </div>
-                                <div className="xcontainer" style={{ marginTop: '40px' }}>
-                                    <div className="table-title">知识点详情:</div>
-                                    <Xtable p={dataAll.knowledge_point_info.personal} o={dataAll.knowledge_point_info.overall} title='知识点'></Xtable>
-                                </div>
-                                <Summarize item={dataAll.knowledge_point_info.conclusion}></Summarize>
+                                    <div className="xcontainer">
+                                        <div id="pcontainer" ></div>
+                                    </div>
+                                    <div className="xcontainer">
+                                        <div className="radar-title">{item.name}分布</div>
+                                        <canvas id={item.uuid} width="300" ref={item.uuid} height="250"></canvas>
+                                    </div>
+                                    <div className="xcontainer" style={{ marginTop: '40px' }}>
+                                        <div className="table-title">{item.name}</div>
+                                        <Xtable p={item.personal} o={item.overall} title={item.name}></Xtable>
+                                    </div>
+                                    <Summarize item={item.conclusion}></Summarize>
 
-                            </div> : ''
+                                </div>
+                            )
+                        })
                     }
-                    {/*个人题型得分情况*/}
-                    < div className="score-report report-sec" >
-                        <div className="r-title">
-                            <span className="r-title-sub"> <i className="r-title-badge before"></i> 题型分数比重分布<i className="r-title-badge after"></i></span>
-                        </div>
-
-                        <div className="xcontainer">
-                            <div id="spcontainer" ></div>
-                        </div>
-                        <div className="xcontainer">
-                            <div className="radar-title">题型得分分布</div>
-                            <canvas id="SocreRadarChart" width="300" height="250" ref="SocreRadarChart"></canvas>
-                        </div>
-                        <div className="xcontainer" style={{ marginTop: '30px' }}>
-                            <div className="table-title">题型详情:</div>
-                            <Xtable p={dataAll.question_type_info.personal} o={dataAll.question_type_info.overall} title='题型'></Xtable>
-                        </div>
-                        <Summarize item={dataAll.question_type_info.conclusion}></Summarize>
-
-                    </div >
-                    {/*个人小分分析*/}
                     {
                         dataAll.question_detail_info.length !== 0 ?
                             <div className="personal-report">

@@ -8,7 +8,7 @@ const REQEUST = {
     SUBMIT: `${PREFIX}/user/searchByStudentID`,
     REPORTLIST: `${PREFIX}/user/searchByStudentID`,
     REPORTDATA: `${PREFIX}/report/data`,
-    UNIEXAM:`${PREFIX}/report/datac`
+    UNIEXAM: `${PREFIX}/report/datac`
 };
 
 export default REQEUST;
