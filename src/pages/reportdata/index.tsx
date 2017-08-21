@@ -57,8 +57,8 @@ class Reportdata extends BaseComponent<{
         var xArr: any = [], yArr: any = [], zArr: any = [], myscore = dataAll.basic_info.user_total_score;
         var deviation = 40;
         xData.score_segments.forEach(function (score: any) {
-            let start_point = score.start_point.toFixed(2);
-            let end_point = score.end_point.toFixed(2);
+            let start_point = score.start_point;
+            let end_point = score.end_point;
             xArr.push(start_point + '-' + end_point);
             if (score.end_point == dataAll.basic_info.exam_total_score ? (myscore * 1 <= score.end_point * 1) && (myscore * 1 >= score.start_point * 1) : (myscore * 1 < score.end_point * 1) && (myscore * 1 >= score.start_point * 1)) {
                 yArr.push({ y: score.count, color: '#f6bc5d' })
@@ -297,10 +297,6 @@ class Reportdata extends BaseComponent<{
                             <div className="title" style={{ backgroundColor: '#51aae4', color: '#fff' }}>个人分数</div>
                             <div className="detail">{`${dataAll.basic_info.user_total_score}/${dataAll.basic_info.exam_total_score}`}</div>
                         </div>
-                        {/*<div className="info-sec">
-                            <div className="title" style={{ backgroundColor: '#2270a7', color: '#fff' }}>个人排名</div>
-                            <div className="detail">{dataAll.basic_info.user_rank}</div>
-                        </div>*/}
                         <div className="info-sec" style={{ marginBottom: '0px' }}>
                             <div className="title" style={{ backgroundColor: '#074977', color: '#fff' }}>个人奖项</div>
                             <div className="detail">{user_prize}</div>
