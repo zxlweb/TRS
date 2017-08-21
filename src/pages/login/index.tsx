@@ -26,18 +26,18 @@ class Login extends BaseComponent<{
         exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        // expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : { internal: true });
+        expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : { internal: true });
 
-        // try {
-        //     const serial = await getStudentSerial();
-        //     res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
-        // } catch (error) {
-        //     if (error.message !== 'redirected') {
-        //         res.end(error.message);
-        //     }
-        // }
+        try {
+            const serial = await getStudentSerial();
+            res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
+        } catch (error) {
+            if (error.message !== 'redirected') {
+                res.end(error.message);
+            }
+        }
 
-        // throw new Error('redirected');
+        throw new Error('redirected');
     }
     setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] { }
