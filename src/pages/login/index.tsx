@@ -18,7 +18,11 @@ import { getStudentSerial, expressInit, clientInit } from 'uis-agent';
 import { WECHAT_AUTH_PLATFORM_ID, TEST_UIS_AGENT_OPTIONS } from '../../const';
 import * as querystring from 'query-string';
 import { envDetect } from 'razy/dist/lib/env-detect';
-
+import Container from './container';
+// import HTML5Backend from 'react-dnd-html5-backend'
+// import Dustbin from './Dustbin'
+// import Box from './Box'
+// import { DragDropContext } from 'react-dnd';
 const style = _importLess('./index', __dirname);
 class Login extends BaseComponent<{
 }, {
@@ -26,18 +30,18 @@ class Login extends BaseComponent<{
         exist: boolean
     }>{
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : { internal: true });
+        // expressInit(req, res, parseInt(__PORT__), WECHAT_AUTH_PLATFORM_ID, envDetect.dev() ? TEST_UIS_AGENT_OPTIONS : { internal: true });
 
-        try {
-            const serial = await getStudentSerial();
-            res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
-        } catch (error) {
-            if (error.message !== 'redirected') {
-                res.end(error.message);
-            }
-        }
+        // try {
+        //     const serial = await getStudentSerial();
+        //     res.redirect(`${ROUTE_PATH.REPORTLIST}/${serial}`);
+        // } catch (error) {
+        //     if (error.message !== 'redirected') {
+        //         res.end(error.message);
+        //     }
+        // }
 
-        throw new Error('redirected');
+        // throw new Error('redirected');
     }
     setUpPage(manager: HTMLManager) { }
     getInitDataActionImp(props: any): void | any[] { }
@@ -78,8 +82,10 @@ class Login extends BaseComponent<{
     }
     render() {
         return (
+
             <div>
                 <style dangerouslySetInnerHTML={{ __html: style }}></style>
+
                 <div className='login-pagewrap'>
                     <h3>学而思 Test Report System</h3>
                     <img src={`${__IMAGE_STATIC_PATH__}/logo.png`} className="img" />
@@ -92,11 +98,16 @@ class Login extends BaseComponent<{
                             <button className="login-btn" onClick={this.handelSubmit.bind(this)} type="button">查询</button>
                         </form>
                     </div>
+                    <Container />
+
                 </div>
+
                 <footer>Copyright © 2017 南京学而思市场部</footer>
             </div>
+
         )
     }
 }
+
 const selector = () => ({})
 export = connect(selector)(Login);
